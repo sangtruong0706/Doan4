@@ -1,0 +1,11 @@
+var Shopify = Shopify || {};
+Shopify.shop = "chicago-theme.myshopify.com";
+Shopify.locale = "en";
+Shopify.currency = {"active":"USD","rate":"1.0"};
+Shopify.country = "US";
+Shopify.theme = {"name":"chicago","id":167765896,"theme_store_id":null,"role":"main"};
+Shopify.theme.handle = "null";
+Shopify.theme.style = {"id":null,"handle":null};
+Shopify.cdnHost = "chicago-theme.myshopify.com/cdn";
+Shopify.routes = Shopify.routes || {};
+Shopify.routes.root = "/";
