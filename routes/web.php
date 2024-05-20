@@ -25,6 +25,7 @@ Route::get('/product/{id}', [ShopController::class, 'product'])->name('client.pr
 Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('client.addToCart');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('client.updateCart');
+Route::post('/delete-cart', [CartController::class, 'deleteItem'])->name('client.deleteItem');
 
 
 

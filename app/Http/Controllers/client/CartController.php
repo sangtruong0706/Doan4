@@ -89,6 +89,65 @@ class CartController extends Controller
         return view('client.cart', $data);
     }
     public function updateCart(Request $request) {
+        $rowId = $request->rowId;
+        $qty = $request->qty;
+        Cart::update($rowId, $qty);
+        $total =0;
+        $subTotal = 0;
+        foreach (Cart::content() as $item) {
+            $total = $item->qty * $item->price;
+            $subTotal += $total;
+            $dataCart[] = [
+                'rowId' => $item->rowId,
+                'product_id' => $item->id,
+                'qty' => $item->qty,
+                'price' => $item->price,
+                'total' => $item->qty * $item->price
+            ];
+        }
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'cart_items' => $dataCart,
+                'subtotal' => $subTotal,
+                'total' => $total
+            ],
+        ]);
+    }
+    public function deleteItem (Request $request) {
+        $cartInfo = Cart::get($request->rowId);
+        $id_product = $cartInfo->id;
+        if ($cartInfo == null) {
+            return response()->json([
+                'status' => false,
+                'message' =>'Cart item not found'
+            ]);
+        }
+        Cart::remove($request->rowId);
+        $subtotal = Cart::subtotal();
+        $shippingCost = 20;
+        if (Cart::count() == 0) {
+            $orderTotal = 0;
+        } else {
+            $orderTotal = $subtotal + $shippingCost;
+        }
 
+        return response()->json([
+            'status' => true,
+            'message' => 'Delete item successfully',
+            'data' => [
+                'product_id' => $id_product,
+                'subtotal' => $subtotal,
+                'ordertotal' => $orderTotal
+            ],
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Delete item successfully',
+            'data' => [
+                'product_id' => $id_product,
+            ],
+        ]);
     }
 }
