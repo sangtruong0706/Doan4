@@ -4,6 +4,7 @@ namespace App\Http\Controllers\client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Province;
 use Illuminate\Http\Request;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -149,5 +150,10 @@ class CartController extends Controller
                 'product_id' => $id_product,
             ],
         ]);
+    }
+    public function checkout() {
+        $provinces = Province::orderBy('id', 'ASC')->get();
+        $data['provinces'] = $provinces;
+        return view('client.checkout', $data);
     }
 }

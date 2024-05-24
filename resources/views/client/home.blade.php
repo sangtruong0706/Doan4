@@ -206,27 +206,27 @@
                 <div class="blog_item">
                    <div class="blog_img">
                       <a href="/blogs/news/mercado-credito-shopify-integration-in-mexico-enhancing-e-commerce-payments">
-                      <img src="client-asset/img/articles/test_grande.png" alt="Mercado Crédito Shopify Integration in Mexico: Enhancing E-commerce Payments" />
+                      <img src="" alt="Mercado Crédito Shopify Integration in Mexico: Enhancing E-commerce Payments" />
                       </a>
                    </div>
-                   <h2> <a href="/blogs/news/mercado-credito-shopify-integration-in-mexico-enhancing-e-commerce-payments">Mercado Crédito Shopify Integration in Mexico: Enhancing E-commerce Payments</a></h2>
+                   <h2> <a href="">Mercado Crédito Shopify Integration in Mexico: Enhancing E-commerce Payments</a></h2>
                    <h5>09 Apr 2024</h5>
                    <p> Mercado Crédito Shopify Integration in Mexico: Enhancing E-commerce Payments Introduction: Picture this: You've found the perfect item after hours of...</p>
-                   <a href="/blogs/news/mercado-credito-shopify-integration-in-mexico-enhancing-e-commerce-payments" class="blog_read_more">Read more
+                   <a href="" class="blog_read_more">Read more
                    <span><i class="fa fa-angle-right"></i></span></a>
                 </div>
              </div>
              <div class="grid__item one-half small--one-whole medium--one-whole">
                 <div class="blog_item">
                    <div class="blog_img">
-                      <a href="/blogs/news/cartier-santos-100-carbon-ballon-bleu-de-cartier-carbon-watches-1">
-                      <img src="client-asset/img/articles/insta_bkg_1024x1024.jpg" alt="We've got your wirst watch covered" />
+                      <a href="">
+                      <img src="" alt="We've got your wirst watch covered" />
                       </a>
                    </div>
-                   <h2> <a href="/blogs/news/cartier-santos-100-carbon-ballon-bleu-de-cartier-carbon-watches-1">We've got your wirst watch covered</a></h2>
+                   <h2> <a href="">We've got your wirst watch covered</a></h2>
                    <h5>07 Nov 2016</h5>
                    <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut...</p>
-                   <a href="/blogs/news/cartier-santos-100-carbon-ballon-bleu-de-cartier-carbon-watches-1" class="blog_read_more">Read more
+                   <a href="" class="blog_read_more">Read more
                    <span><i class="fa fa-angle-right"></i></span></a>
                 </div>
              </div>

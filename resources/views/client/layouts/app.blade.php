@@ -18,9 +18,9 @@
       <!-- CSS ================================================== -->
       <link href="{{ asset("client-asset/css/style.scss.css") }}" rel="stylesheet" type="text/css" media="all" />
       <link href="{{ asset("client-asset/css/ion.rangeSlider.min.css") }}" rel="stylesheet" type="text/css" media="all" />
-      <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,400italic,300,500,700' rel='stylesheet' type='text/css'>
+      {{-- <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,400italic,300,500,700' rel='stylesheet' type='text/css'> --}}
       <link href="{{ asset ("client-asset/font/font-awesome.css") }}" rel="stylesheet" type="text/css" media="all" />
-      <link href="{{ asset ("client-asset/owl_carousel/owl.carousel.css") }}" rel="stylesheet" type="text/css" media="all" />
+      {{-- <link href="{{ asset ("client-asset/owl_carousel/owl.carousel.css") }}" rel="stylesheet" type="text/css" media="all" /> --}}
       <link href="{{ asset ("client-asset/css/jquery-ui.css") }}" rel="stylesheet" type="text/css" media="all" />
 
 
@@ -28,12 +28,12 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 
 
-      {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"> --}}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
       <!-- js ================================================== -->
       <script src="{{ asset ("client-asset/js/jquery.min.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/jquery.bxslider.js") }}" type="text/javascript"></script>
-      <script src="{{ asset ("client-asset/js/owl.carousel.min.js") }}" type="text/javascript"></script>
+      {{-- <script src="{{ asset ("client-asset/js/owl.carousel.min.js") }}" type="text/javascript"></script> --}}
       <script src="{{ asset ("client-asset/js/jquery.meanmenu.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/jquery-ui.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/grids.js") }}" type="text/javascript"></script>
@@ -45,12 +45,12 @@
 
       <script src="{{ asset ("client-asset/js/chicago.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/jquery.history.js") }}" type="text/javascript"></script>
-      <script src="{{ asset ("client-asset/js/shopify-modules.js") }}" type="text/javascript"></script>
+      {{-- <script src="{{ asset ("client-asset/js/shopify-modules.js") }}" type="text/javascript"></script> --}}
       <script src="{{ asset ("client-asset/js/shopify-analytics-setup.js") }}" type="text/javascript"></script>
-      <script src="{{ asset ("client-asset/js/shopify-features.js") }}" type="text/javascript"></script>
+      {{-- <script src="{{ asset ("client-asset/js/shopify-features.js") }}" type="text/javascript"></script> --}}
       <script src="{{ asset ("client-asset/js/jquery.cookie.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/handlebars.min.js") }}" type="text/javascript"></script>
-      <script src="{{ asset ("client-asset/js/modernizr.min.js") }}" type="text/javascript"></script>
+      {{-- <script src="{{ asset ("client-asset/js/modernizr.min.js") }}" type="text/javascript"></script> --}}
       {{-- <script src="{{ asset ("client-asset/js/jquery.zoom.js") }}" type="text/javascript"></script> --}}
       <!-- Body font -->
       <link href="{{ asset ("client-asset/font/font.css") }}" rel="stylesheet" type="text/css" media="all" />
@@ -100,15 +100,25 @@
                                  <!-- <button type="submit"><img src="assets/img/svg/search-ico.svg"alt=""></button> -->
                               </form>
                            </div>
-                           <div class="opened_account " >
-                              <!-- form login-->
-                              <form method="post" action="/account/login" id="customer_login" >
-                                 <input type="email" name="email" id="CustomerEmail" placeholder="Email">
-                                 <input type="password" value="" name="password" id="CustomerPassword"  placeholder="Password">
-                                 <input type="submit" value="Login" />
-                              </form>
-                              <p> or <a href="/account/register">Register</a> </p>
-                           </div>
+                           <div class="opened_account {{ Auth::check() ? 'login active' : '' }}">
+                                <!-- Nếu người dùng chưa đăng nhập, hiển thị form login -->
+                                @guest
+                                    <form method="post" action="{{ route('account.login') }}" id="customer_login">
+                                        @csrf
+                                        <input type="email" name="email" id="CustomerEmail" placeholder="Email">
+                                        <input type="password" name="password" id="CustomerPassword" placeholder="Password">
+                                        <input type="submit" value="Login">
+                                    </form>
+                                    <p> or <a href="{{ route('account.register') }}">Register</a> </p>
+                                @endguest
+
+                                <!-- Nếu người dùng đã đăng nhập, hiển thị các liên kết Account và Wishlist -->
+                                @auth
+                                    <a href="{{ route("account.profile") }}" class="btn">Account</a>
+                                    <a href="/pages/wishlist" class="btn">Wishlist</a>
+                                @endauth
+                            </div>
+
                         </div>
                         <div class="header_opations">
                            <nav id="main-nav">
@@ -161,6 +171,12 @@
                                  </li>
                               </ul>
                            </nav>
+                           @if (Session::has('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ Session::get('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
                         </div>
                      </div>
                   </div>
@@ -343,6 +359,7 @@
       <script id="CartTemplate" type="text/template"></script>
       <script src="{{ asset ("client-asset/js/ajax-cart.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/ion.rangeSlider.min.js") }}" type="text/javascript"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
       <!-- AdRoll Pixel setup on 08 Dec 2017 -->
       {{-- <div id="messageBox"></div>
       <div class="loading-modal" data-translate="cart.ajax_cart.loading" style="display: none;">Loading...</div>
@@ -379,7 +396,7 @@
 
       <!-- End AdRoll Pixel setup on 08 Dec 2017 -->
       @yield('customJs')
-      {{-- <script>
+      <script>
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -397,6 +414,6 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
-    </script> --}}
+    </script>
    </body>
 </html>

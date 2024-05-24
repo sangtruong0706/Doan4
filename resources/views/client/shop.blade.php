@@ -39,7 +39,7 @@
                <div class="filter_sidebar">
                   <div class="sidebar_item">
                      <h1>Brand</h1>
-                     <ul class="brand-filter">
+                     <div class="brand-filter">
                         @if ($brands->isNotEmpty())
                             @foreach ($brands as $brand)
                                 <div class="radio_row">
@@ -48,7 +48,7 @@
                                 </div>
                             @endforeach
                         @endif
-                     </ul>
+                     </div>
                   </div>
                </div>
                <div class="">

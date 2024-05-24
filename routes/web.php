@@ -7,13 +7,16 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\BrandController;
-use App\Http\Controllers\admin\CategoryController;
-use App\Http\Controllers\admin\ProductController;
-use App\Http\Controllers\admin\ProductImageController;
-use App\Http\Controllers\admin\TempImageController;
+use App\Http\Controllers\client\AuthController;
 use App\Http\Controllers\client\CartController;
-use App\Http\Controllers\client\ClientController;
 use App\Http\Controllers\client\ShopController;
+use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\client\ClientController;
+use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\TempImageController;
+use App\Http\Controllers\client\LocationController;
+use App\Http\Controllers\admin\ProductImageController;
+use App\Http\Controllers\client\LoginGoogleController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -26,7 +29,31 @@ Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('client.addToCart');
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('client.updateCart');
 Route::post('/delete-cart', [CartController::class, 'deleteItem'])->name('client.deleteItem');
+Route::get('/checkout', [CartController::class, 'checkout'])->name('client.checkout');
 
+// Location
+Route::get('/districts/{province_id}', [LocationController::class, 'getDistricts'])->name('client.getDistricts');
+Route::get('/wards/{district_id}', [LocationController::class, 'getWards'])->name('client.getWards');
+
+// Login Google
+Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('client.redirectToGoogle');
+Route::get('auth/google/callback', [LoginGoogleController::class, 'handleGoogleCallback'])->name('client.handleGoogleCallback');
+
+
+Route::group(['prefix' => 'account'], function () {
+    Route::group(['middleware' => 'guest'], function () {
+        Route::get('/login', [AuthController::class, 'login'])->name('account.login');
+        Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('account.authenticate');
+        Route::get('/register', [AuthController::class, 'register'])->name('account.register');
+        Route::post('/process-register', [AuthController::class, 'processRegister'])->name('account.processRegister');
+
+    });
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+        Route::get('/address', [AuthController::class, 'address'])->name('account.address');
+        Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
+    });
+});
 
 
 Route::group(['prefix' => 'admin'], function () {
