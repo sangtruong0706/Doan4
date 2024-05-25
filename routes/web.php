@@ -30,6 +30,8 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('client.
 Route::post('/update-cart', [CartController::class, 'updateCart'])->name('client.updateCart');
 Route::post('/delete-cart', [CartController::class, 'deleteItem'])->name('client.deleteItem');
 Route::get('/checkout', [CartController::class, 'checkout'])->name('client.checkout');
+Route::post('/process-checkout', [CartController::class, 'processCheckout'])->name('client.processCheckout');
+Route::get('/thank-you/{orderId}', [CartController::class, 'thankYouOrder'])->name('client.thankYouOrder');
 
 // Location
 Route::get('/districts/{province_id}', [LocationController::class, 'getDistricts'])->name('client.getDistricts');
@@ -51,6 +53,7 @@ Route::group(['prefix' => 'account'], function () {
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
         Route::get('/address', [AuthController::class, 'address'])->name('account.address');
+        Route::post('/update-address', [AuthController::class, 'updateAddress'])->name('account.updateAddress');
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
     });
 });

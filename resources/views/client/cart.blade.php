@@ -133,22 +133,11 @@
                                     </div>
                                 </div>
                                 <div class="grid__item seven-twelfths small--one-whole medium--one-whole right">
-                                    @php
-                                    $subtotal = 0;
-                                    $shippingCost = 20;
-                                    $orderTotal = 0;
-                                    @endphp
-                                    @foreach(Cart::content() as $item)
-                                        @php
-                                            $total = $item->price * $item->qty;
-                                            $subtotal += $total;
-                                        @endphp
-                                    @endforeach
-
                                     <h1>
                                         Sub Total :
                                         <span>
-                                            <p id="cart_subTotal">${{ $subtotal }}</p>
+                                            {{-- <p id="cart_subTotal">${{ $subtotal }}</p> --}}
+                                            <p id="cart_subTotal">${{ Cart::subtotal(0,'.','')}}</p>
                                         </span>
                                     </h1>
                                     <h1>
@@ -159,6 +148,8 @@
                                     </h1>
                                     <h1>
                                         @php
+                                            $subtotal = Cart::subtotal(0,'.','');
+                                            $shippingCost = 20;
                                             $orderTotal = $subtotal +20;
                                         @endphp
                                         Order Total :
@@ -171,15 +162,11 @@
                                             <input onclick="Continue_shopping()" type="button" id="checkout" name="checkout" class="continue_shopping" value="CONTINUE SHOPPING">
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="button" id="checkout" name="checkout" class="check_btn" value="Checkout">
+                                            {{-- <input type="button" id="checkout" name="checkout" class="check_btn" value="Checkout"> --}}
+                                            {{-- <a class="btn check_btn" href="{{ route("client.checkout") }}">Checkout</a> --}}
+                                            <input onclick="checkout()" type="button" id="checkout" name="checkout" class="check_btn" value="Checkout">
                                         </div>
-
                                            {{-- <a href="{{ route("client.shop") }}" class="btn continue_shopping">CONTINUE SHOPPING</a> --}}
-
-
-
-
-
                                     </div>
                                 </div>
                             </div>
@@ -197,9 +184,6 @@
                     </div>
                 </div>
             @endif
-
-
-
          </div>
       </div>
    </div>
@@ -246,7 +230,6 @@
                             $('#cartTotal_' + item.product_id).text('$' + item.total);
                         });
                         $('#order-total').text('$' + orderTotal);
-
                     }
                 }
             })
@@ -270,11 +253,9 @@
         function Continue_shopping(){
             location.href = '{{ route("client.shop") }}';
         }
-        // function formatCurrency(value) {
-        //     return parseFloat(value).toLocaleString('en-US', {
-        //         minimumFractionDigits: 0,
-        //         maximumFractionDigits: 2
-        //     }).replace(/\.00$/, '');
-        // }
+        function checkout() {
+            location.href = '{{ route("client.checkout") }}';
+        }
+
     </script>
 @endsection

@@ -16,6 +16,11 @@ class LoginGoogleController extends Controller
     }
     public function handleGoogleCallback() {
         try {
+            // Kiểm tra xem có tham số lỗi trong URL không
+            if (request()->has('error')) {
+                session()->flash('error', 'You have declined the Google login.');
+                return redirect()->route('client.login');
+            }
             $user = Socialite::driver('google')->user();
             $finduser = User::where('google_id', $user->id)->first();
             if($finduser){

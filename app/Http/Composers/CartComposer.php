@@ -10,6 +10,7 @@ class CartComposer
     {
         $view->with('cartContent', Cart::content());
         $view->with('cartTotal', Cart::total());
+        $view->with('cartSubTotal', Cart::subtotal());
         $view->with('cartCount', Cart::count());
         $countCart =0;
         foreach (Cart::content() as $item) {

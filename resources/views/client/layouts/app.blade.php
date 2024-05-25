@@ -103,7 +103,7 @@
                            <div class="opened_account {{ Auth::check() ? 'login active' : '' }}">
                                 <!-- Nếu người dùng chưa đăng nhập, hiển thị form login -->
                                 @guest
-                                    <form method="post" action="{{ route('account.login') }}" id="customer_login">
+                                    <form method="post" action="{{ route("account.authenticate") }}" id="customer_login">
                                         @csrf
                                         <input type="email" name="email" id="CustomerEmail" placeholder="Email">
                                         <input type="password" name="password" id="CustomerPassword" placeholder="Password">
@@ -341,12 +341,12 @@
                           <p class="ajax_subtotal">Order Total</p>
                        </div>
                        <div class="grid__item one-half text-right">
-                          <p>${{ $cartTotal }}</p>
+                          <p>${{ $cartSubTotal }}</p>
                        </div>
                     </div>
-                    <button type="submit" class="btn--secondary btn--full cart__checkout" name="checkout">
+                    <a href="{{ route("client.checkout") }}" class="btn btn--full cart__checkout" name="checkout">
                     Checkout &rarr;
-                    </button>
+                    </a>
                     <a href="{{ route("client.cart") }}" class="cart_redirect"> View Cart <span><i class="fa fa-angle-right"></i></span></a>
                  </div>
                 </div>
