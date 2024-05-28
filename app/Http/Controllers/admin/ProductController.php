@@ -121,6 +121,7 @@ class ProductController extends Controller
                     $image->save($destPath);
                 }
             }
+            session()->flash('success', 'Product added successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Product added successfully'
@@ -239,6 +240,7 @@ class ProductController extends Controller
             //         $image->save($destPath);
             //     }
             // }
+            session()->flash('success', 'Product added successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Update product successfully'

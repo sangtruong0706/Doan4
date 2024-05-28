@@ -166,7 +166,8 @@
                                 <div class="detail_row price_row">
                                 <h4><span>Price</span>:</h4>
                                 <h3>
-                                    <span id="ProductPrice" class="h2">${{ $product->price}}</span>
+                                    <span id="ProductPrice" class="h2">{{ number_format($product->price, 0, ',', '.') }} vnđ</span>
+
                                 </h3>
                                 </div>
                                 <div class="detail_row color_row">

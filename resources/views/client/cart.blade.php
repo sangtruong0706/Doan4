@@ -92,10 +92,10 @@
                                         </div>
                                         <div class="grid__item two-twelfths small--hide medium--hide">
                                             <div class="tr cart-price">
-                                            <p><span class="money">${{ $item->price }}</span></p>
+                                            <p><span class="money">{{ number_format($item->price, 0, ',', '.') }} vnđ</span></p>
                                             </div>
                                         </div>
-                                        <div class="grid__item two-twelfths small--seven-twelfths medium--three-twelfths">
+                                        <div class="grid__item two-twelfths small--five-twelfths medium--three-twelfths">
                                             <div class="cart-qty">
                                             <div class="qty_box">
                                                 <div>
@@ -108,9 +108,11 @@
                                             </div>
                                             </div>
                                         </div>
-                                        <div class="grid__item one-twelfth small--five-twelfths medium--three-twelfths">
+                                        <div class="grid__item one-twelfth small--seven-twelfths medium--three-twelfths">
                                             <div class="tr cart-total">
-                                            <p><span id="cartTotal_{{ $item->id }}" class="money"> ${{ $item->price * $item->qty }}</span></p>
+                                            {{-- <p><span id="cartTotal_{{ $item->id }}" class="money"> ${{ $item->price * $item->qty }}</span></p> --}}
+                                            <p><span id="cartTotal_{{ $item->id }}" class="money"> {{ number_format(($item->price * $item->qty), 0, ',', '.') }} vnđ</span></p>
+
                                             </div>
                                         </div>
                                         <div class="tr cart-cancel">
@@ -137,24 +139,8 @@
                                         Sub Total :
                                         <span>
                                             {{-- <p id="cart_subTotal">${{ $subtotal }}</p> --}}
-                                            <p id="cart_subTotal">${{ Cart::subtotal(0,'.','')}}</p>
-                                        </span>
-                                    </h1>
-                                    <h1>
-                                        Shipping :
-                                        <span >
-                                            <p>$20</p>
-                                        </span>
-                                    </h1>
-                                    <h1>
-                                        @php
-                                            $subtotal = Cart::subtotal(0,'.','');
-                                            $shippingCost = 20;
-                                            $orderTotal = $subtotal +20;
-                                        @endphp
-                                        Order Total :
-                                        <span>
-                                            <p id="order-total">${{ $orderTotal }}</p>
+                                            {{-- <p id="cart_subTotal">${{ Cart::subtotal(0,'.','')}}</p> --}}
+                                            <p id="cart_subTotal">{{ number_format(Cart::subtotal(0,'.',''), 0, ',', '.') }} vnđ</p>
                                         </span>
                                     </h1>
                                     <div class="row" style="display: flex; justify-content: right; align-items: center;">
@@ -213,9 +199,29 @@
                 updateCart(rowId, newQty)
             }
         });
-
+        function number_format(number, decimals, dec_point, thousands_sep) {
+            number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function(n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.round(n * k) / k;
+                };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        }
         function updateCart(rowId, qty){
-            var shippingCost = 20;
             $.ajax({
                 url: '{{ route("client.updateCart") }}',
                 type: 'post',
@@ -224,12 +230,13 @@
                 success: function(response){
                     if (response.status == true) {
                         var subtotal = parseFloat(response.data.subtotal);
-                        var orderTotal = subtotal + shippingCost;
-                        $('#cart_subTotal').text('$' + response.data.subtotal);
+                        // $('#cart_subTotal').text('$' + response.data.subtotal);
+                        $('#cart_subTotal').text(number_format(response.data.subtotal, 0, ',', '.') + ' vnđ');
                         response.data.cart_items.forEach(function(item) {
-                            $('#cartTotal_' + item.product_id).text('$' + item.total);
+                            // $('#cartTotal_' + item.product_id).text('$' + item.total);
+                            $('#cartTotal_' + item.product_id).text(number_format(item.total, 0, ',', '.') + ' vnđ');
                         });
-                        $('#order-total').text('$' + orderTotal);
+                        $('#order-total').text(number_format(orderTotal, 0, ',', '.') + ' vnđ');
                     }
                 }
             })
@@ -243,8 +250,8 @@
                 success: function(response){
                     if (response.status == true) {
                         $('#row_' + response.data.product_id).hide();
-                        $('#cart_subTotal').text('$' + response.data.subtotal);
-                        $('#order-total').text('$' + response.data.ordertotal);
+                        $('#cart_subTotal').text(number_format(response.data.subtotal, 0, ',', '.') + ' vnđ');
+                        // $('#order-total').text(number_format(response.data.ordertotal, 0, ',', '.') + ' vnđ');
                     }
                 }
             })

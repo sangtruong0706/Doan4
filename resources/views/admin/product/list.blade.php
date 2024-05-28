@@ -1,6 +1,7 @@
 @extends('admin.layouts.app')
 @section('content')
 <section class="content-header">
+    @include('admin.message')
     <div class="container-fluid my-2">
        <div class="row mb-2">
           <div class="col-sm-6">
@@ -68,7 +69,8 @@
                                     @endif
                                 </td>
                                 <td><a href="#">{{ $product->title }}</a></td>
-                                <td>${{ $product->price }}</td>
+                                {{-- <td>${{ $product->price }}</td> --}}
+                                <td>{{ number_format($product->price, 0, ',', '.') }} vnđ</td>
                                 <td>{{ $totalQuantity }} left in Stock</td>
                                 <td>{{ $product->product_code }}</td>
                                 <td>

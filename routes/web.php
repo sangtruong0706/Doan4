@@ -16,7 +16,9 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\client\LocationController;
 use App\Http\Controllers\admin\ProductImageController;
+use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\client\LoginGoogleController;
+use App\Http\Controllers\client\VnPayController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -31,11 +33,17 @@ Route::post('/update-cart', [CartController::class, 'updateCart'])->name('client
 Route::post('/delete-cart', [CartController::class, 'deleteItem'])->name('client.deleteItem');
 Route::get('/checkout', [CartController::class, 'checkout'])->name('client.checkout');
 Route::post('/process-checkout', [CartController::class, 'processCheckout'])->name('client.processCheckout');
-Route::get('/thank-you/{orderId}', [CartController::class, 'thankYouOrder'])->name('client.thankYouOrder');
+Route::get('/thank-you/{orderId?}', [CartController::class, 'thankYouOrder'])->name('client.thankYouOrder');
+Route::get('/payment-failed', [CartController::class, 'paymentFailed'])->name('client.paymentFailed');
+Route::get('/return/vnpay', [VnPayController::class, 'handleVNPayReturn'])->name('vnpay.return');
+Route::get('/autocomplete-search', [ClientController::class, 'autocompleteSearch'])->name('client.autocompleteSearch');
 
 // Location
 Route::get('/districts/{province_id}', [LocationController::class, 'getDistricts'])->name('client.getDistricts');
 Route::get('/wards/{district_id}', [LocationController::class, 'getWards'])->name('client.getWards');
+
+// Shipping Charge
+Route::get('/get-shipping-charge/{province_id}', [CartController::class, 'getShippingCharge'])->name("client.getShippingCharge");
 
 // Login Google
 Route::get('auth/google', [LoginGoogleController::class, 'redirectToGoogle'])->name('client.redirectToGoogle');
@@ -92,6 +100,12 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
 
+        // Shipping Route
+        Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
+        Route::post('/shipping/create', [ShippingController::class, 'store'])->name('shipping.store');
+        Route::get('/shipping/{shipping}/edit', [ShippingController::class, 'edit'])->name('shipping.edit');
+        Route::put('/shipping/{shipping}', [ShippingController::class, 'update'])->name('shipping.update');
+        Route::delete('/shipping/{shipping}', [ShippingController::class, 'destroy'])->name('shipping.delete');
 
         //product update image
         Route::post('/product-images/update', [ProductImageController::class, 'update'])->name('product-images.update');

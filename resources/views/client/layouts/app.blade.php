@@ -22,7 +22,7 @@
       <link href="{{ asset ("client-asset/font/font-awesome.css") }}" rel="stylesheet" type="text/css" media="all" />
       {{-- <link href="{{ asset ("client-asset/owl_carousel/owl.carousel.css") }}" rel="stylesheet" type="text/css" media="all" /> --}}
       <link href="{{ asset ("client-asset/css/jquery-ui.css") }}" rel="stylesheet" type="text/css" media="all" />
-
+      {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" /> --}}
 
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
       <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
@@ -54,6 +54,7 @@
       {{-- <script src="{{ asset ("client-asset/js/jquery.zoom.js") }}" type="text/javascript"></script> --}}
       <!-- Body font -->
       <link href="{{ asset ("client-asset/font/font.css") }}" rel="stylesheet" type="text/css" media="all" />
+
       <meta name="csrf-token" content="{{ csrf_token() }}">
    </head>
    <body  class="template-index" >
@@ -94,7 +95,7 @@
                            </ul>
                            <div class="opened_search">
                               <!-- form serch-->
-                              <form action="/search" method="get"  role="search">
+                              <form action="/search" method="get"  role="search" autocomplete="off">
                                  <input type="search" name="keyword" id="search-input"  placeholder="Search Products here...." required>
                                  <input type="submit"/>
                                  <!-- <button type="submit"><img src="assets/img/svg/search-ico.svg"alt=""></button> -->
@@ -385,6 +386,30 @@
                else {window.attachEvent('onload', _onload)}
          }());
       </script> --}}
+
+      {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
+      <script type="text/javascript">
+        var route = '{{ route("client.autocompleteSearch") }}';
+        $('#search-input').typeahead({
+            source: function (query, process) {
+                return $.get(route, { query: query }, function (data) {
+                    // Chuyển đổi dữ liệu trả về thành một mảng chứa các tiêu đề sản phẩm
+                    var titles = data.map(function(item) {
+                        return item.title;
+                    });
+                    return process(titles);
+                });
+            },
+            displayText: function(item) {
+                return item;
+            },
+            afterSelect: function(item) {
+                console.log('Selected Item:', item); // Kiểm tra giá trị đã chọn
+            }
+        });
+    </script>
+
       <script type="text/javascript">
             $.ajaxSetup({
                 headers: {
@@ -392,7 +417,6 @@
                 }
             });
         </script>
-
 
       <!-- End AdRoll Pixel setup on 08 Dec 2017 -->
       @yield('customJs')
@@ -415,5 +439,6 @@
             "hideMethod": "fadeOut"
         };
     </script>
+
    </body>
 </html>

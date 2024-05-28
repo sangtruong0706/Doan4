@@ -80,7 +80,7 @@
                             <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="price">Price</label>
-                                <input type="text" name="price" id="price" class="form-control" placeholder="Price" value="{{ $product->price }}">
+                                <input type="text" name="price" id="price" class="form-control" placeholder="Price" value="{{ $product->price}}">
                                 <p class="error"></p>
                             </div>
                             </div>
@@ -226,16 +226,17 @@
             success: function(response) {
                 $("button[type='submit']").prop('disabled',false);
                 if(response['status'] == true) {
-                    Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: response.message,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Nếu người dùng nhấn OK, thực hiện chuyển hướng
-                            window.location.href = "{{ route('products.index') }}";
-                        }
-                    });
+                    // Swal.fire({
+                    // icon: 'success',
+                    // title: 'Success!',
+                    // text: response.message,
+                    // }).then((result) => {
+                    //     if (result.isConfirmed) {
+                    //         // Nếu người dùng nhấn OK, thực hiện chuyển hướng
+                    //         window.location.href = "{{ route('products.index') }}";
+                    //     }
+                    // });
+                    window.location.href = "{{ route('products.index') }}";
                     $(".error").removeClass('invalid-feedback').html('');
                     $("input[type='text'], select").removeClass('is-invalid');
                 }else {

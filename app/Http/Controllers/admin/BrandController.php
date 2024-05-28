@@ -31,12 +31,13 @@ class BrandController extends Controller
             $brand->slug = $request->slug;
             $brand->status = $request->status;
             $brand->save();
-
+            session()->flash('success', 'Create brand successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Create brand successfully'
             ]);
         }else {
+            session()->flash('error', 'Create brand failed');
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
@@ -66,11 +67,13 @@ class BrandController extends Controller
             $brand->slug = $request->slug;
             $brand->status = $request->status;
             $brand->save();
+            session()->flash('success', 'Update brand successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Update brand successfully'
             ]);
         }else {
+            session()->flash('error', 'Update brand failed');
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
@@ -83,6 +86,7 @@ class BrandController extends Controller
             return redirect()->route('brands.index');
         }
         $brand->delete();
+        session()->flash('success', 'Delete brand successfully');
         return response()->json([
             'status' => true,
             'message' => 'Brand deleted successfully',

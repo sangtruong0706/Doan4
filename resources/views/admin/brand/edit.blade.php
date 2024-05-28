@@ -78,16 +78,17 @@
         dataType: 'json',
         success: function(response){
             if (response['status'] == true) {
-                Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: response.message,
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Nếu người dùng nhấn OK, thực hiện chuyển hướng
-                        window.location.href = "{{ route('brands.index') }}";
-                    }
-                });
+                // Swal.fire({
+                // icon: 'success',
+                // title: 'Success!',
+                // text: response.message,
+                // }).then((result) => {
+                //     if (result.isConfirmed) {
+                //         // Nếu người dùng nhấn OK, thực hiện chuyển hướng
+                //         window.location.href = "{{ route('brands.index') }}";
+                //     }
+                // });
+                window.location.href = "{{ route('brands.index') }}";
                 $("#name").removeClass('is-invalid').siblings('p')
                 .addClass('invalid-feedback').html("");
                 $("#slug").removeClass('is-invalid').siblings('p')

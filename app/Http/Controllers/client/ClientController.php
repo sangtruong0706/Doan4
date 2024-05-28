@@ -12,14 +12,15 @@ class ClientController extends Controller
     public function index () {
         $data = [];
         $categories_index = Category::whereIn('name', ['Mens', 'Womans', 'Sports'])->get();
-        $features_products = Product::with('brand')
+        $features_products = Product::orderBy('id','DESC')
+                                    ->with('brand')
                                     ->with('productImages')
                                     ->where('is_feature', 'Yes')
                                     ->where('status', '1')
                                     ->take(4)
                                     ->get();
 
-        $latest_products = Product::orderBy('id','ASC')
+        $latest_products = Product::orderBy('id','DESC')
                                     ->with('brand')
                                     ->with('productImages')
                                     ->where('status', '1')
@@ -30,5 +31,11 @@ class ClientController extends Controller
         $data['features_products'] = $features_products;
         $data['latest_products'] = $latest_products;
         return view('client.home', $data);
+    }
+    public function autocompleteSearch(Request $request)
+    {
+        $query = $request->get('query');
+        $filterResult = Product::where('title', 'LIKE', '%'. $query. '%')->get();
+        return response()->json($filterResult);
     }
 }

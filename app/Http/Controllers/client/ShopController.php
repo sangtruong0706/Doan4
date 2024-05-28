@@ -40,8 +40,8 @@ class ShopController extends Controller
         }
         //filter by price
         if ($request->get('price_max') != '' && $request->get('price_min') != ''){
-            if ($request->get('price_max') == 1000){
-                $products = $products->whereBetween('price',[intval($request->get('price_min')), 100000]);
+            if ($request->get('price_max') == 100000000){
+                $products = $products->whereBetween('price',[intval($request->get('price_min')), 100000000]);
             }else {
                 $products = $products->whereBetween('price',[intval($request->get('price_min')), intval($request->get('price_max'))]);
             }
@@ -71,7 +71,7 @@ class ShopController extends Controller
         $data['categorySelected'] = $categorySelected;
         $data['brandSelected'] = $brandSelected;
         $data['price_min'] = intval($request->get('price_min'));
-        $data['price_max'] = (intval($request->get('price_max')) == 0) ? 1000:intval($request->get('price_max'));
+        $data['price_max'] = (intval($request->get('price_max')) == 0) ? 100000000:intval($request->get('price_max'));
         if($request->get('sort') != ''){
             $data['sortSelected'] = $sortSelected;
         }else {

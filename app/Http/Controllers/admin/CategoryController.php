@@ -57,12 +57,13 @@ class CategoryController extends Controller
                 $category->image = $newImageName;
                 $category->save();
             }
-            // $request->session()->flash('success', 'Create category successfully');
+            session()->flash('success', 'Create category successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Create category successfully'
             ]);
         }else {
+            session()->flash('error', 'Create category successfully');
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
@@ -117,11 +118,13 @@ class CategoryController extends Controller
                 File::delete(public_path().'/uploads/category/'.$oldImage);
             }
             // $request->session()->flash('success', 'Create category successfully');
+            session()->flash('success', 'Update category successfully');
             return response()->json([
                 'status' => true,
                 'message' => 'Update category successfully'
             ]);
         }else {
+            session()->flash('error', 'Update category failed');
             return response()->json([
                 'status' => false,
                 'errors' => $validator->errors()
@@ -136,6 +139,7 @@ class CategoryController extends Controller
         File::delete(public_path().'/uploads/category/thumb/'.$category->image);
         File::delete(public_path().'/uploads/category/'.$category->image);
         $category->delete();
+        session()->flash('success', 'Delete category successfully');
         return response()->json([
             'status' => true,
             'message' => 'Category deleted successfully',

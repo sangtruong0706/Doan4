@@ -69,8 +69,7 @@
                                 <div class="product_desc">
                                     <a href="{{ route("client.product", $product->id) }}">{{ $product->brand->name }}</a>
                                     <h3><a href="{{ route("client.product", $product->id) }}">{{ $product->title }}</a></h3>
-                                    <h4>${{ $product->price }}
-                                    </h4>
+                                    <h4>{{ number_format($product->price, 0, ',', '.') }} vnđ</h4>
                                 </div>
                                 </div>
                             </div>
@@ -116,73 +115,13 @@
                                 <div class="product_desc">
                                     <a href="{{ route("client.product", $product_latest->id) }}">{{ $product_latest->brand->name }}</a>
                                     <h3><a href="{{ route("client.product", $product_latest->id) }}">{{ $product_latest->title }}</a></h3>
-                                    <h4>${{ $product_latest->price }}
-                                    </h4>
+                                    <h4>{{ number_format($product_latest->price, 0, ',', '.') }} vnđ</h4>
                                 </div>
                                 </div>
                             </div>
                         @endforeach
                     @endif
 
-
-                   {{-- <div class="grid__item three-twelfths small--one-whole medium--one-half">
-                      <div class="product_item">
-                         <a href="/products/armani-swiss-made-cronograph-watch">
-                            <div class="product_image">
-                               <span class="product_overlay"></span>
-                         <a href="/products/armani-swiss-made-cronograph-watch" class="btn">Shop Now</a>
-                         <img src="client-asset/img/products/50158920rp_large.jpg" alt="armani- SWISS MADE CRONOGRAPH WATCH"/>
-                         <span class="onsale">Sale</span>
-                         <span class="onnew">New</span>
-                         </div>
-                         </a>
-                         <div class="product_desc">
-                            <a href="/products/armani-swiss-made-cronograph-watch">armani</a>
-                            <h3><a href="/products/armani-swiss-made-cronograph-watch">Armani- swiss made cronograph watch</a></h3>
-                            <h4>$359.00
-                               <span><del>$450.00</del></span>
-                            </h4>
-                            <span class="shopify-product-reviews-badge" data-id="8162281608"></span>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="grid__item three-twelfths small--one-whole medium--one-half">
-                      <div class="product_item">
-                         <a href="/products/pre-owned-rolex-mens-submariner-stainless-steel-black-dial-watch">
-                            <div class="product_image">
-                               <span class="product_overlay"></span>
-                         <a href="/products/pre-owned-rolex-mens-submariner-stainless-steel-black-dial-watch" class="btn">Shop Now</a>
-                         <img src="client-asset/img/products/Pre-Owned-Rolex-Mens-Submariner-Stainless-Steel-Black-Dial-Watch_arge.jpg" alt="Pre-Owned Rolex Men's Submariner Stainless Steel Black Dial Watch"/>
-                         </div>
-                         </a>
-                         <div class="product_desc">
-                            <a href="/products/pre-owned-rolex-mens-submariner-stainless-steel-black-dial-watch">rolex</a>
-                            <h3><a href="/products/pre-owned-rolex-mens-submariner-stainless-steel-black-dial-watch">Pre-owned rolex men's submariner stainless steel black dial watch</a></h3>
-                            <h4>$810.00
-                            </h4>
-                            <span class="shopify-product-reviews-badge" data-id="8162283400"></span>
-                         </div>
-                      </div>
-                   </div>
-                   <div class="grid__item three-twelfths small--one-whole medium--one-half">
-                      <div class="product_item">
-                         <a href="/products/tag-heuer-aquaracer-watch-1">
-                            <div class="product_image">
-                               <span class="product_overlay"></span>
-                         <a href="/products/tag-heuer-aquaracer-watch-1" class="btn">Shop Now</a>
-                         <img src="client-asset/img/products/Tag-Heuer-Formula_large.jpg" alt="Tag Heuer 1 Waz1110.ba0875 Watch"/>
-                         <span class="onnew">New</span>
-                         </div>
-                         </a>
-                         <div class="product_desc">
-                            <a href="/products/tag-heuer-aquaracer-watch-1">tagheuer</a>
-                            <h3><a href="/products/tag-heuer-aquaracer-watch-1">Tag heuer 1 waz1110.ba0875 watch</a></h3>
-                            <h4>$499.00
-                            </h4>
-                            <span class="shopify-product-reviews-badge" data-id="8162274248"></span>
-                         </div>
-                      </div>
-                   </div> --}}
                 </div>
              </div>
              <div class="featured_btn">

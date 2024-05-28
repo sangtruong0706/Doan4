@@ -158,7 +158,7 @@
                                     <div class="row">
                                         <label for="province">Provinces</label>
                                         <select id="province" name="province" class="input-full form-control" >
-                                            <option value="">--Select province--</option>
+                                            <option value="0">--Select province--</option>
                                             @foreach($provinces as $province)
                                                 <option {{ (((!empty($customerAddress)) ? $customerAddress->province_id : '') == $province->id) ? 'selected' : '' }} value="{{ $province->id }}">{{ $province->name }}</option>
                                             @endforeach
@@ -233,17 +233,18 @@
                                 @endif
                                 {{-- <img src="{{ asset("client-asset/img/collection/collection1.jpg") }}" alt="" style="width:64px; heigh:64px;"> --}}
                                 <div class="h5 mx-2">{{ $item->name }} X {{ $item->qty }}</div>
-                                <div class="h5 mx-4">${{ $item->price }}</div>
+                                <div class="h5 mx-4">{{ number_format($item->price, 0, ',', '.') }} vnđ</div>
                             </div>
                         @endforeach
 
                         <div class="d-flex justify-content-between mt-2">
                             <div class="h2"><strong>Shipping</strong></div>
-                            <input class="h3"><strong>$20</strong></input>
+                            <div id="shipping-charge" class="h3">{{ number_format($shippingCharge, 0, ',', '.') }} vnđ</div>
+                            <input type="hidden" name="shipping_charge" id="shipping_charge_input" value="{{ $shippingCharge }}">
                         </div>
                         <div class="d-flex justify-content-between mt-2 summery-end">
                             <div class="h2"><strong>Total</strong></div>
-                            <div class="h3"><strong>$420</strong></div>
+                            <div id="grand_total" class="h3">{{ number_format($grandTotal, 0, ',', '.') }} vnđ</div>
                         </div>
                     </div>
                 </div>
@@ -251,15 +252,15 @@
                     <h3 class="card-title h2 mb-3">Payment Method</h3>
                     <div class="card-body p-0">
                         <div class="radio_row">
-                            <input checked class="brand_label" type="radio" id="radio_cod" name="payment_method" value="money">
-                            <label for="radio_cod"><span></span>Thanh toán bằng tiền mặt</label>
+                            <input checked class="brand_label" type="radio" id="radio_cod" name="payment_method" value="cod">
+                            <label for="radio_cod"><span></span>Thanh toán bằng tiền mặt(COD)</label>
                         </div>
                         <div class="radio_row">
-                            <input class="brand_label" type="radio" id="radio_vnp" name="payment_method" value="vnp">
-                            <label for="radio_vnp"><span></span>VNpay</label>
+                            <input id="vnpay" class="brand_label" type="radio" name="payment_method" value="vnpay">
+                            <label for="vnpay"><span></span>VNpay</label>
                         </div>
                         <div class="pt-4">
-                            <button type="submit" class="btn-dark btn btn-block w-100">Pay Now</button>
+                            <button name="redirect" type="submit" class="btn-dark btn btn-block w-100">Pay Now</button>
                         </div>
                     </div>
                 </div>
@@ -287,9 +288,22 @@
                             });
                         }
                     });
+                    // AJAX request to get shipping charge
+                    $.ajax({
+                        url: '/get-shipping-charge/' + province_id,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            // Update shipping charge
+                            $('#shipping-charge').text(response.shipping_charge_formatted);
+                            $('#shipping_charge_input').val(response.shipping_charge);
+                            $('#grand_total').text(response.grand_total_formatted);
+                        }
+                    });
                 } else {
                     $('#district').empty();
                     $('#district').append('<option value="">Chọn quận/huyện</option>');
+                    $('#shipping-charge').text('0 vnđ');
                 }
             });
 
@@ -332,7 +346,12 @@
                             .addClass('invalid-feedback').html(value);
                         });
                     }else {
-                        window.location.href = '{{ url('thank-you/') }}/' + response.orderId;
+                        if (response.url) {
+                            window.location.href = response.url;
+                        } else {
+                            window.location.href = '{{ url('thank-you/') }}/' + response.orderId;
+                        }
+                        // window.location.href = '{{ url('thank-you/') }}/' + response.orderId;
                     }
                 }
 

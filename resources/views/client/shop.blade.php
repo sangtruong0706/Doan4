@@ -115,8 +115,7 @@
                                         <div class="product_desc">
                                             <a  href="{{ route("client.product", $product->id) }}">{{ $product->brand->name }}</a>
                                             <h3><a  href="{{ route("client.product", $product->id) }}">{{ $product->title }}</a></h3>
-                                            <h4>${{ $product->price }}
-                                            </h4>
+                                            <h4>{{ number_format($product->price, 0, ',', '.') }} vnđ</h4>
                                             <span class="shopify-product-reviews-badge" data-id="8162296584"></span>
                                         </div>
                                         </div>
@@ -149,13 +148,13 @@
         rangeSlider = $(".js-range-slider").ionRangeSlider({
             type: "double",
             min: 0,
-            max: 1000,
+            max: 100000000,
             from: {{ $price_min }},
-            step: 10,
+            step: 100,
             to: {{ $price_max }},
             skin: "square",
             max_postfix: "+",
-            prefix: "$",
+            prefix: "vnđ ",
             onChange: function() {
                 apply_filters()
             }
