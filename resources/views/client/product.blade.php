@@ -1,5 +1,6 @@
 @extends('client.layouts.app')
 @section('content')
+
 <div class="header_height"></div>
 <div class="breadcrumb_section">
    <div class="container">
@@ -15,6 +16,23 @@
       </div>
    </div>
 </div>
+ {{-- <!--Wishlist Modal -->
+ <div class="modal fade" id="wishListModal" style="z-index: 999" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Succec</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div> --}}
 <div class="content">
     <!-- Content Start -->
     <div class="container">
@@ -244,7 +262,7 @@
                         </form>
                         <div class="product_wishlist_btn">
                             <div class="js-wish-list">
-                                <button> <a href="#" title="Add to wishlist">+ Add to Wishlist</a></button>
+                                <button> <a href="javascript:void(0);" onclick="addToWishList({{ $product->id }});" title="Add to wishlist">+ Add to Wishlist</a></button>
                             </div>
                         </div>
                     </div>
@@ -338,10 +356,11 @@
        </div>
     </div>
  </div>
+
  @endsection
  @section('customJs')
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/2.2.0/jquery.elevatezoom.min.js"></script> --}}
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('.zoom-image').magnificPopup({
@@ -415,8 +434,6 @@
         //     });
         // });
 
-
-
         $(".brand_label").change(function() {
             apply_filters();
         });
@@ -442,6 +459,31 @@
 
 
             window.location.href = url;
+        }
+
+        function addToWishList(id) {
+            var size = $("input[name='size']:checked").val();
+            var color = $("input[name='color']:checked").val();
+            var quantity = $("#quantity").val();
+
+            $.ajax({
+                url: '{{ route("client.addToWishList") }}',
+                type: 'post',
+                data: {
+                    product_id: id,
+                    size: size,
+                    color: color,
+                    quantity: quantity,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == true) {
+                        toastr.success(response.message);
+                    } else {
+                        window.location.href = '{{ route("account.login") }}'
+                    }
+                },
+            })
         }
     </script>
 @endsection

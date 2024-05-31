@@ -39,9 +39,12 @@ class VnPayController extends Controller
                 // Xử lý logic khi giao dịch thành công
                 // Bạn có thể cập nhật trạng thái đơn hàng tại đây
                 // Ví dụ:
-                // $order = Order::find($request->query('vnp_TxnRef'));
-                // $order->status = 'paid';
-                // $order->save();
+                $order = Order::find($request->query('vnp_TxnRef'));
+                $order->payment_status = 'Đã thanh toán';
+                $order->save();
+                // Send Order Email
+                OrderEmail($order->id);
+                session()->forget('code');
                 Cart::destroy();
                 session()->flash('success', 'Thanh toán thành công!');
                 return redirect()->route('client.thankYouOrder');

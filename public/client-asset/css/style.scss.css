@@ -10109,8 +10109,43 @@ option:hover {
   max-height: 386px;
   overflow: auto;
 }
+.checkout_section {
+    background: none !important;
+}
+.apply-coupon {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+   border: 0.5px;
+   box-sizing: border-box;
+  }
+  .apply-coupon .apply-btn {
+    display: inline-block;
+    padding: 7px 0px;
+    border: 1px solid #d63612 !important;
+    /* width: auto; */
+    margin: 0;
+    /* line-height: 39px; */
+    height: 38px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 1px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.apply-coupon .apply-btn:hover {
+    background-color: #d63612;
+    color: #fff !important;
+}
+.apply-coupan button {
+padding-left: 10px;
+padding-right: 10px;
+}
 .cart_section {
-  background: url(../../../files/cart_bkg_d2ff1a1b-1566-41e0-b5f8-41d900bde16f.jpg?v=1487851590)
+  background: url(../../client-asset/img/slider/cart_session.jpg)
     center center no-repeat;
   background-attachment: fixed;
   background-size: 100%;
@@ -13806,5 +13841,47 @@ select.form-control.is-invalid {
 .form-control[readonly] {
     background-color: #e9ecef;
     opacity: 1;
+}
+ul.nav-pills > li {
+    list-style-type: none; /* Bỏ dấu chấm của các mục */
+    padding: 4px; /* Loại bỏ khoảng cách đệm mặc định */
+    margin: 0; /* Loại bỏ khoảng cách mặc định */
+}
+.nav-pills .nav-link {
+    border-radius: 0.25rem;
+  }
+.nav-pills .nav-link.active {
+    color: #d63612;
+    background-color: transparent;
+}
+.nav-pills .nav-link {
+    color: #6c757d;
+  }
+  .nav-pills .nav-link:not(.active):hover {
+    color: #007bff;
+  }
+  .nav-pills .nav-item .nav-link:hover {
+    color: #d63612;
+  }
+  .nav-pills > .nav-item .nav-icon {
+    margin-left: .05rem;
+    font-size: 1.2rem;
+    margin-right: .2rem;
+    text-align: center;
+    width: 1.6rem;
+  }
+
+  .nav-pills > .nav-item .nav-icon.fa,  .nav-pills > .nav-item .nav-icon.fas,  .nav-pills > .nav-item .nav-icon.far,  .nav-pills> .nav-item .nav-icon.fab,  .nav-pills > .nav-item .nav-icon.fal,  .nav-pills > .nav-item .nav-icon.fad,  .nav-pills > .nav-item .nav-icon.svg-inline--fa,  .nav-pills > .nav-item .nav-icon.ion {
+    font-size: 1.1rem;
+  }
+
+  .nav-pills > .nav-item .float-right {
+    margin-top: 3px;
+  }
+  .nav-pills > .nav-item .fas {
+    margin-right: 10px;
+  }
+.view_address >ul > li {
+    list-style-type: square;
 }
 

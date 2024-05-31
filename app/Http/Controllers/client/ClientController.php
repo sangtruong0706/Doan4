@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\client;
 
+use App\Models\Product;
 use App\Models\Category;
+use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -37,5 +39,35 @@ class ClientController extends Controller
         $query = $request->get('query');
         $filterResult = Product::where('title', 'LIKE', '%'. $query. '%')->get();
         return response()->json($filterResult);
+    }
+    public function addToWishList(Request $request) {
+        if (Auth::check() == false) {
+
+            session(['url.intended' => url()->previous()]);
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Please login to add this product wishlist',
+            ]);
+        }
+        Wishlist::updateOrCreate(
+            [
+            'user_id' => Auth::user()->id,
+            'product_id' => $request->product_id,
+            ],
+            [
+                'user_id' => Auth::user()->id,
+                'product_id' => $request->product_id,
+            ]
+            );
+        // $wishlist = new Wishlist();
+        // $wishlist->user_id = Auth::user()->id;
+        // $wishlist->product_id = $request->product_id;
+        // $wishlist->save();
+        // session()->flash('success', 'Product wishlist added successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Product wishlist added successfully',
+        ]);
     }
 }

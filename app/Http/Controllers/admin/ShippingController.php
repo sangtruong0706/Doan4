@@ -13,8 +13,8 @@ class ShippingController extends Controller
     public function create () {
         $provinces = Province::get();
         $shippingCharges = ShippingCharge::select('shipping_charges.*', 'provinces.name')->
-        leftJoin('provinces','provinces.id','shipping_charges.province_id')->get();
-
+        leftJoin('provinces','provinces.id','shipping_charges.province_id');
+        $shippingCharges = $shippingCharges->paginate(10);
         $data['provinces'] = $provinces;
         $data['shippingCharges'] = $shippingCharges;
         return view('admin.shipping.create', $data);

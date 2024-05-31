@@ -5,7 +5,7 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
       <!-- Google Tag Manager -->
-      <script src="{{ asset ("client-asset/js/gmt.js") }}" type="text/javascript"></script>
+      {{-- <script src="{{ asset ("client-asset/js/gmt.js") }}" type="text/javascript"></script> --}}
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       <!-- Basic page needs ================================================== -->
       <meta charset="utf-8">
@@ -95,8 +95,8 @@
                            </ul>
                            <div class="opened_search">
                               <!-- form serch-->
-                              <form action="/search" method="get"  role="search" autocomplete="off">
-                                 <input type="search" name="keyword" id="search-input"  placeholder="Search Products here...." required>
+                              <form action="{{ route("client.shop") }}" method="get"  role="search" autocomplete="off">
+                                 <input value="{{ Request::get('keyword') }}" id="keyword" type="search" name="keyword" id="search-input"  placeholder="Search Products here...." required>
                                  <input type="submit"/>
                                  <!-- <button type="submit"><img src="assets/img/svg/search-ico.svg"alt=""></button> -->
                               </form>

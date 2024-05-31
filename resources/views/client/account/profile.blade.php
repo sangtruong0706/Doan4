@@ -17,48 +17,46 @@
    </div>
 </div>
 <div class="content">
-    <div id="customer-account">
-       <div class="container">
-            @if (Session::has('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ Session::get('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <section class=" section-11 ">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    @include('client.account.sidebar')
                 </div>
-            @endif
-          <div class="row">
-             <div class="section_title black_border">
-                <h1>ACCOUNT DETAILS</h1>
-                <span class="title_border black_border"></span>
-             </div>
-          </div>
-          <div class="grid">
-             <div class="grid__item one-whole">
-                <div class="user_name">
-                   <p class="email">{{ Auth::user()->email }}<a href="{{ route("account.logout") }}">Log out</a></p>
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="h5 mb-0 pt-2 pb-2">Personal Information</h2>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="mb-3">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" placeholder="Enter Your Name" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email">Email</label>
+                                    <input type="text" name="email" id="email" placeholder="Enter Your Email" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone">Phone</label>
+                                    <input type="text" name="phone" id="phone" placeholder="Enter Your Phone" class="form-control">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="phone">Address</label>
+                                    <textarea name="address" id="address" class="form-control" cols="30" rows="5" placeholder="Enter Your Address"></textarea>
+                                </div>
+
+                                <div class="d-flex">
+                                    <button class="btn btn-dark">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-             </div>
-             <div class="row grid__item large--four-twelfths medium-down--one-whole">
-                <div id="customer_sidebar" class="span4">
-                   <div class="address">
-                      <p>
-                        {{ Auth::user()->name }}
-                         <br>
-                         <br>
-                         <br>
-                         <br>
-                         <br>
-                         <br>Türkiye
-                         <br>
-                      </p>
-                      <a href="{{ route("account.address") }}" id="view_address" class="add-new-address btn">View Addresses <span><i class="fa fa-angle-right"></i></span></a>
-                   </div>
-                </div>
-             </div>
-             <p>You haven't placed any orders yet.</p>
-             <ul>
-             </ul>
-          </div>
-       </div>
-    </div>
+            </div>
+        </div>
+    </section>
 </div>
 @endsection

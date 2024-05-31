@@ -9,6 +9,9 @@ use App\Models\Province;
 use Illuminate\Http\Request;
 use App\Models\CustomerAddress;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -94,6 +97,7 @@ class AuthController extends Controller
         $data['customerDistrict'] = $district;
         $data['customerWard'] = $ward;
 
+
         return view('client.account.address', $data);
     }
     public function updateAddress (Request $request) {
@@ -138,6 +142,52 @@ class AuthController extends Controller
             'message' => 'Update address successfully',
         ]);
     }
+
+    public function orders () {
+        $user = Auth::user();
+        $orders = Order::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+        $data['orders'] = $orders;
+
+        return view("client.account.order", $data);
+    }
+    public function orderDetails($id) {
+        $data=[];
+        $user = Auth::user();
+        $order = Order::where('user_id', $user->id)->where('id', $id)->first();
+        $orderItems = OrderItem::where('order_id', $id)->get();
+
+        $data['order'] = $order;
+        $data['orderItems'] = $orderItems;
+        return view('client.account.orderdetail', $data);
+    }
+
+    public function wishlist() {
+
+        $wishlists = Wishlist::where('user_id',Auth::user()->id)->with('product')->get();
+        $data['wishlists'] = $wishlists;
+
+        return view('client.account.wishlist', $data);
+    }
+
+    public function removeProductFromWishlist(Request $request) {
+        $wishlist = Wishlist::where('user_id',Auth::user()->id)->where('product_id', $request->product_id)->first();
+        if ($wishlist == null){
+            session()->flash('error', 'Product already removed');
+            return response()->json([
+                'status' => true,
+                'message' => 'Product already removed',
+            ]);
+        }
+        $wishlist->delete();
+        session()->flash('success', 'Product remove successfully');
+        return response()->json([
+            'status' => true,
+            'message' => 'Product remove successfully',
+        ]);
+
+    }
+
+
     public function logout(){
         Auth::logout();
         return redirect()->route("account.login")->with('success', 'You have been logged out');

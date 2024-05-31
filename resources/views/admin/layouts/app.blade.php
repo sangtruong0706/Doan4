@@ -15,6 +15,7 @@
 		<link rel="stylesheet" href="{{ asset ("admin-asset/plugins/dropzone/min/dropzone.min.css") }}">
 		<link rel="stylesheet" href="{{ asset ("admin-asset/plugins/summernote/summernote.min.css") }}">
 		<link rel="stylesheet" href="{{ asset ("admin-asset/css/custom.css") }}">
+		<link rel="stylesheet" href="{{ asset ("admin-asset/css/datetimepicker.css") }}">
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
         <!-- Dropzone -->
 
@@ -92,6 +93,7 @@
 		<!--Dropzone -->
 		<script src="{{ asset ("admin-asset/plugins/dropzone/min/dropzone.min.js") }}"></script>
 		<script src="{{ asset ("admin-asset/plugins/summernote/summernote.min.js") }}"></script>
+		<script src="{{ asset ("admin-asset/js/datetimepicker.js") }}"></script>
 		<!-- AdminLTE for demo purposes -->
 		<script src="{{ asset ("admin-asset/js/demo.js") }}"></script>
         @yield('customJs')

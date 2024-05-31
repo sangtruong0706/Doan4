@@ -117,7 +117,7 @@
             </div>
         </div>
     </div> --}}
-    <div class=" cart_section container" >
+    <div class=" cart_section container checkout_section" >
         <div class="grid">
            <div class="cart_title grid__item">
               <span class="cart_page_top_icon"></span>
@@ -238,6 +238,11 @@
                         @endforeach
 
                         <div class="d-flex justify-content-between mt-2">
+                            <div class="h2"><strong>Discount</strong></div>
+                            <div id="discount_val" class="h3">{{ number_format($discount, 0, ',', '.') }} vnđ</div>
+                            {{-- <input type="hidden" name="shipping_charge" id="shipping_charge_input" value="{{ $shippingCharge }}"> --}}
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
                             <div class="h2"><strong>Shipping</strong></div>
                             <div id="shipping-charge" class="h3">{{ number_format($shippingCharge, 0, ',', '.') }} vnđ</div>
                             <input type="hidden" name="shipping_charge" id="shipping_charge_input" value="{{ $shippingCharge }}">
@@ -247,6 +252,20 @@
                             <div id="grand_total" class="h3">{{ number_format($grandTotal, 0, ',', '.') }} vnđ</div>
                         </div>
                     </div>
+                </div>
+                <div class="input-group apply-coupon" style="padding: 13px; !important; margin-top: 25px;">
+                    <input type="text" class="input-full form-control" placeholder="Coupon Code" name="discount_code" id="discount_code">
+                    <div class="input-group-append">
+                        <button type="button" id="apply-discount" class="apply-btn">Apply Coupon</button>
+                    </div>
+                </div>
+                <div id="discount-response-wraper">
+                    @if ((session()->has('code')))
+                        <div id="discount-response" class="input-group apply-coupon" style="margin-top: 25px;">
+                            <strong>{{ session()->get('code') }}</strong>
+                            <button id="removeDiscount" class="mx-2"><i class="fa-solid fa-x"></i></button>
+                        </div>
+                    @endif
                 </div>
                 <div class="card payment-form " style="padding: 13px; !important; margin-top: 25px;">
                     <h3 class="card-title h2 mb-3">Payment Method</h3>
@@ -294,10 +313,12 @@
                         type: 'GET',
                         dataType: 'json',
                         success: function(response) {
-                            // Update shipping charge
-                            $('#shipping-charge').text(response.shipping_charge_formatted);
-                            $('#shipping_charge_input').val(response.shipping_charge);
-                            $('#grand_total').text(response.grand_total_formatted);
+                            if (response.status == true) {
+                                $('#shipping-charge').text(response.shipping_charge_formatted);
+                                $('#shipping_charge_input').val(response.shipping_charge);
+                                $('#grand_total').text(response.grand_total_formatted);
+                                $('#discount_val').html(response.discount_format);
+                            }
                         }
                     });
                 } else {
@@ -306,7 +327,6 @@
                     $('#shipping-charge').text('0 vnđ');
                 }
             });
-
             $('#district').change(function() {
                 var district_id = $(this).val();
                 if (district_id) {
@@ -357,5 +377,56 @@
 
             })
         });
+        $("#apply-discount").click(function(event){
+            event.preventDefault();
+            var province_id = $("#province").val();
+            var code = $("#discount_code").val();
+            $.ajax({
+                    url: '/apply-discount/' + province_id + '/' + code,
+                    type: 'GET',
+                    data: {code: $("#discount_code").val(), province: $("#province").val()},
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        if (response.status == true){
+                            $('#shipping-charge').html(response.shipping_charge_formatted);
+                            $('#shipping_charge_input').val(response.shipping_charge);
+                            $('#grand_total').html(response.grand_total_formatted);
+                            $('#discount_val').html(response.discount_format);
+                            $("#discount-response-wraper").html(response.discountString);
+
+                        }else {
+                            $("#discount-response-wraper").html("<span class='text-danger'>"+response.message+"</span>");
+                        }
+                    }
+            });
+        });
+        $('body').on('click','#removeDiscount', function(){
+            event.preventDefault();
+            var province_id = $("#province").val();
+            // var code = $("#discount_code").val();
+            $.ajax({
+                    url: '/remove-discount/' + province_id ,
+                    type: 'GET',
+                    data: {province: $("#province").val()},
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+                        if (response.status == true){
+                            $('#shipping-charge').html(response.shipping_charge_formatted);
+                            $('#shipping_charge_input').val(response.shipping_charge);
+                            $('#grand_total').html(response.grand_total_formatted);
+                            $('#discount_val').html(response.discount_format);
+                            $("#discount-response").html('');
+                            $("#discount_code").val('');
+                        }else {
+                            alert('loi');
+                        }
+                    }
+            });
+        });
+        // $("#removeDiscount").click(function(event){
+
+        // });
     </script>
 @endsection

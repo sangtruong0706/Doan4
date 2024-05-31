@@ -186,6 +186,12 @@
             // Price Range Filter
             url += '&price_min='+slider.result.from+'&price_max='+slider.result.to;
 
+            // search filter
+            var keyword = $("#keyword").val();
+            if (keyword.length > 0) {
+                url += '&search='+ keyword;
+            }
+
             //Sorting filter
             url += '&sort='+$("#sort").val();
 

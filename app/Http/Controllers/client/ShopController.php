@@ -48,6 +48,11 @@ class ShopController extends Controller
 
         }
 
+        // Search product
+        if (!empty($request->get('keyword'))){
+            $products = $products->where('title','like','%'.$request->get('keyword').'%');
+        }
+
         //Sorting filter
         if($request->get('sort') != ''){
             $sortSelected = $request->get('sort');
@@ -61,6 +66,7 @@ class ShopController extends Controller
         }else {
             $products = $products->orderBy('id', 'DESC');
         }
+
 
 
         $products = $products->with('brand')->with('productImages')->paginate(5);
