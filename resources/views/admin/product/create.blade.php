@@ -37,11 +37,11 @@
                             </div>
                             </div>
                             <div class="col-md-12">
-                            <div class="mb-3">
-                                <label for="description">Description</label>
-                                <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description"></textarea>
-                                <p class="error"></p>
-                            </div>
+                                <div class="mb-3">
+                                    <label for="description">Description</label>
+                                    <textarea name="description" id="description" cols="30" rows="10" class="summernote" placeholder="Description"></textarea>
+                                    <p class="error"></p>
+                                </div>
                             </div>
                         </div>
                     </div>

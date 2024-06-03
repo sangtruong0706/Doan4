@@ -111,7 +111,7 @@
                                         <div class="grid__item one-twelfth small--seven-twelfths medium--three-twelfths">
                                             <div class="tr cart-total">
                                             {{-- <p><span id="cartTotal_{{ $item->id }}" class="money"> ${{ $item->price * $item->qty }}</span></p> --}}
-                                            <p><span id="cartTotal_{{ $item->id }}" class="money"> {{ number_format(($item->price * $item->qty), 0, ',', '.') }} vnđ</span></p>
+                                            <p><span id="cartTotal_{{ $item->id }}" class="money"> {{ number_format(($item->price * $item->qty), 0, ',' , '.') }} vnđ</span></p>
 
                                             </div>
                                         </div>

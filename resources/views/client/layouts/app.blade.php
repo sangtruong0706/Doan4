@@ -17,6 +17,7 @@
       </title>
       <!-- CSS ================================================== -->
       <link href="{{ asset("client-asset/css/style.scss.css") }}" rel="stylesheet" type="text/css" media="all" />
+      <link href="{{ asset("client-asset/css/rating.css") }}" rel="stylesheet" type="text/css" media="all" />
       <link href="{{ asset("client-asset/css/ion.rangeSlider.min.css") }}" rel="stylesheet" type="text/css" media="all" />
       {{-- <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,400italic,300,500,700' rel='stylesheet' type='text/css'> --}}
       <link href="{{ asset ("client-asset/font/font-awesome.css") }}" rel="stylesheet" type="text/css" media="all" />
@@ -116,7 +117,7 @@
                                 <!-- Nếu người dùng đã đăng nhập, hiển thị các liên kết Account và Wishlist -->
                                 @auth
                                     <a href="{{ route("account.profile") }}" class="btn">Account</a>
-                                    <a href="/pages/wishlist" class="btn">Wishlist</a>
+                                    <a href="{{ route("account.wishlist") }}" class="btn">Wishlist</a>
                                 @endauth
                             </div>
 
@@ -129,7 +130,7 @@
                                     <a href="{{ route("client.home") }}">Home</a>
                                  </li>
                                  <li class=" ">
-                                    <a href="pages/collection.html">Collections</a>
+                                    <a href="{{ route("client.collection") }}">Collections</a>
                                  </li>
                                  <li class="has-sub ">
                                     <a href="{{ route("client.shop") }}">Shop</a>
@@ -152,21 +153,15 @@
                                     <a href="#">Pages</a>
                                     <!-- START SECOND LEVEL -->
                                     <ul>
-                                       <li class=" ">
-                                          <a href="pages/about_us.html"> About Us</a>
-                                          <!-- START THIRD LEVEL -->
-                                          <!-- END THIRD LEVEL -->
-                                       </li>
-                                       <li class=" ">
-                                          <a href="pages/contact_us.html"> Contact Us</a>
-                                          <!-- START THIRD LEVEL -->
-                                          <!-- END THIRD LEVEL -->
-                                       </li>
-                                       <li class=" ">
-                                          <a href="/pages/wishlist"> Wishlist</a>
-                                          <!-- START THIRD LEVEL -->
-                                          <!-- END THIRD LEVEL -->
-                                       </li>
+                                        @if ($pages->isNotEmpty())
+                                            @foreach ($pages as $page)
+                                                <li class=" ">
+                                                    <a href="{{ route("client.page",$page->slug) }}">{{ $page->name }}</a>
+                                                </li>
+                                            @endforeach
+                                        @else
+
+                                        @endif
                                     </ul>
                                     <!-- END SECOND LEVEL -->
                                  </li>
@@ -326,7 +321,7 @@
                                         <a href="{{ route("client.product", $item->id) }}" class="ajaxcart__product-name">{{ $item->name }}</a>
                                         <span class="ajaxcart__product-meta">{{ $item->options->size }} / {{ $item->options->color }}</span>
                                         <span class="ajaxcart__product-meta">{{ $item->options->brand }}</span>
-                                        <span class="ajaxcart__product-meta">${{ $item->price }} x {{ $item->qty }}</span>
+                                        <span class="ajaxcart__product-meta">{{ $item->price }} vnđ x {{ $item->qty }}</span>
                                     </p>
                                 </div>
                             </div>
@@ -342,7 +337,18 @@
                           <p class="ajax_subtotal">Order Total</p>
                        </div>
                        <div class="grid__item one-half text-right">
-                          <p>${{ $cartSubTotal }}</p>
+                        @if ($cartContent->count() > 0)
+                            @foreach ($cartContent as $item)
+                                @php
+                                    $subTotal = $item->price * $item->qty;
+                                @endphp
+                            @endforeach
+                        @else
+                             @php
+                                $subTotal = 0;
+                            @endphp
+                        @endif
+                          <p>{{ number_format( ($subTotal), 0, ',', '.') }} vnđ</p>
                        </div>
                     </div>
                     <a href="{{ route("client.checkout") }}" class="btn btn--full cart__checkout" name="checkout">

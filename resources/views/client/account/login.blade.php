@@ -56,30 +56,13 @@
                          <p>
                             <button type="submit">Sign In<span><i class="fa fa-angle-right"></i></span></button>
                          </p>
-                         <a href="{{ route("client.shop") }}"><span><i class="fa fa-angle-left"></i></span>Return to Store</a>
-                         <a href="#recover" id="RecoverPassword">Forgot your password? <span><i class="fa fa-angle-right"></i></span></a>
+                         <a href="{{ route("client.shop") }}"><span><i class="fa fa-angle-left"></i></span>Return to Store </a>
+                         <a href="{{ route("account.forgotPasswordForm") }}"> Forgot your password? <span><i class="fa fa-angle-right"></i></span></a>
                       </form>
                    </div>
                     <a class="my-3" href="{{ route("client.redirectToGoogle") }}">
                         <img src="{{ asset("client-asset/img/logo/google_signin.png") }}" style="margin-left: 3em;">
                     </a>
-                   <div id="RecoverPasswordForm" style="display: none;">
-                      <h2>Reset your password</h2>
-                      <p>We will send you an email to reset your password.</p>
-                      <div class="form-vertical">
-                         <form method="post" action="/account/recover" accept-charset="UTF-8">
-                            <input type="hidden" name="form_type" value="recover_customer_password"><input type="hidden" name="utf8" value="✓">
-                            <div class="row">
-                               <label for="RecoverEmail" class="hidden-label">Email</label>
-                               <input type="email" value="" arial-label="Email" name="email" id="RecoverEmail" class="input-full" placeholder="Email" autocorrect="off" autocapitalize="off">
-                            </div>
-                            <div class="submit_row">
-                               <button type="submit" arial-label="submit" class="btn btn--full">Submit</button>
-                            </div>
-                            <a href="#" class="btn" id="HideRecoverPasswordLink">Cancel</a>
-                         </form>
-                      </div>
-                   </div>
                 </div>
              </div>
           </div>

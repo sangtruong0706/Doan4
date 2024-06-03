@@ -155,6 +155,7 @@
             skin: "square",
             max_postfix: "+",
             prefix: "vnđ ",
+            grid: true,
             onChange: function() {
                 apply_filters()
             }

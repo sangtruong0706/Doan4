@@ -20,4 +20,18 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class);
     }
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(ProductRating::class)->where('status', 1);
+    }
 }

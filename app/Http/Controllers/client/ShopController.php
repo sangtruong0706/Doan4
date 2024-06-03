@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\client;
 
+use App\Models\Size;
 use App\Models\Brand;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Size;
+use App\Models\ProductRating;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ShopController extends Controller
 {
@@ -69,7 +73,7 @@ class ShopController extends Controller
 
 
 
-        $products = $products->with('brand')->with('productImages')->paginate(5);
+        $products = $products->with('brand')->with('productImages')->paginate(8);
 
         $data['categories'] = $categories;
         $data['brands'] = $brands;
@@ -98,16 +102,39 @@ class ShopController extends Controller
 
         $categories = Category::orderBy('id', 'asc')->where('status', '1')->get();
         $brands = Brand::orderBy('id', 'asc')->where('status', '1')->get();
-        $product = Product::where('id', $id)->with('productImages')->with('brand')->with('productDetails')->first();
+        $product = Product::where('id', $id)
+                            ->withCount('ratings')
+                            ->withSum('ratings', 'rating')
+                            ->with('productImages', 'ratings', 'brand', 'productDetails')
+                            ->first();
+        // dd($product);
         //related product
         $relatedProducts = Product::where('brand_id', $product->brand_id)
                                     ->where('id', '!=', $id)
                                     ->with('productImages')
                                     ->take(3)
                                     ->get();
+
         if($product === null) {
             abort(404);
         }
+
+
+        $hasPurchased = OrderItem::where('product_id', $product->id)
+            ->whereHas('order', function($query) {
+                $query->where('user_id', Auth::id());
+            })->exists();
+
+        // Rating Calculator
+        // "ratings_count" => 1
+        // "ratings_sum_rating" => "3.0"
+        $avgRating = '0.0';
+        $avgRatingPer = '0';
+        if ($product->ratings_count > 0) {
+            $avgRating = number_format(($product->ratings_sum_rating / $product->ratings_count), 1);
+            $avgRatingPer = $avgRating*100/5;
+        }
+
 
         $data['categories'] = $categories;
         $data['brands'] = $brands;
@@ -119,11 +146,50 @@ class ShopController extends Controller
         $data['price_max'] = 1000;
         $data['product'] = $product;
         $data['relatedProducts'] = $relatedProducts;
+        $data['hasPurchased'] = $hasPurchased;
+        $data['avgRating'] = $avgRating;
+        $data['avgRatingPer'] = $avgRatingPer;
 
         // echo $id;
 
 
         return view('client.product', $data);
+    }
+    public function saveRating(Request $request, $product_id) {
+        $validator = Validator::make($request->all(), [
+            'rating' => 'required',
+            'comment' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
+        $user = Auth::user();
 
+        // Check user already rating
+        $existingRating = ProductRating::where('user_id', $user->id)
+        ->where('product_id', $request->product_id)
+        ->first();
+
+        if ($existingRating) {
+        // Nếu người dùng đã đánh giá cho sản phẩm này trước đó
+        session()->flash('error', 'You have already rated this product!!');
+        return response()->json(['status' => true]);
+        }
+
+        $productRating = new ProductRating();
+        $productRating->user_id = $user->id;
+        $productRating->product_id = $product_id;
+        $productRating->rating = $request->rating;
+        $productRating->comment = $request->comment;
+        $productRating->status = 0;
+        $productRating->save();
+        session()->flash('success','Thank for your rating!');
+        return response()->json([
+            'status' => true,
+            'message' => "Rating successfully"
+        ]);
     }
 }

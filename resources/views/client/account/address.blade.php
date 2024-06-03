@@ -48,7 +48,6 @@
                                     <li><strong>Address: </strong>{{ (!empty($customerAddress)) ? $customerAddress->address : '' }}</li>
                                     <li> <strong>Phone: </strong> {{ (!empty($customerAddress)) ? $customerAddress->phone : '' }}</li>
                                 </ul>
-
                             </div>
 
                             <div id="EditAddressForm" class="form-vertical my-4" style="display:none;">
@@ -59,18 +58,21 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
+                                                        <label for="first_name">First Name</label>
                                                         <input type="text" name="first_name" id="first_name" class="input-full form-control" placeholder="First Name" value="{{ (!empty($customerAddress)) ? $customerAddress->first_name : '' }}">
                                                         <p class="p_error"></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
+                                                        <label for="last_name">Last Name</label>
                                                         <input type="text" name="last_name" id="last_name" class="input-full form-control" placeholder="Last Name" value="{{ (!empty($customerAddress)) ? $customerAddress->last_name : '' }}">
                                                         <p class="p_error"></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
+                                                        <label for="email">Email</label>
                                                         <input type="text" name="email" id="email" class="input-full form-control" placeholder="Email" value="{{  (!empty($customerAddress)) ? $customerAddress->email : '' }}">
                                                         <p class="p_error"></p>
                                                     </div>
@@ -115,7 +117,8 @@
                                                 </div>
                                                 <div class="col-md-12 my-3">
                                                 <div class="mb-3">
-                                                    <textarea style="resize: none" name="address" id="address" cols="30" rows="5" placeholder="Address" class="input-full ">
+                                                    <label for="address">Address</label>
+                                                    <textarea style="resize: none; text-align: left;" name="address" id="address" rows="5" placeholder="Address" class="input-full ">
                                                         {{ (!empty($customerAddress)) ? $customerAddress->address : ''}}
                                                     </textarea>
                                                     <p class="p_error"></p>
@@ -123,6 +126,7 @@
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="mb-3">
+                                                        <label for="phone">Phone</label>
                                                         <input type="text" name="phone" id="phone" class="input-full form-control" placeholder="Mobile phone" value="{{ (!empty($customerAddress)) ? $customerAddress->phone : '' }}">
                                                         <p class="p_error"></p>
                                                     </div>
@@ -215,8 +219,9 @@
                 dataType: 'json',
                 data: $(this).serializeArray(),
                 success: function (response) {
-                    var error = response['errors'];
+
                     if (response.status == false) {
+                        var error = response['errors'];
                         $("input[type='text'], select").removeClass('is-invalid');
                         $("textarea[type='text'], select").removeClass('is-invalid');
                         $(".p_error").removeClass('invalid-feedback').html('');

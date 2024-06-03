@@ -5,22 +5,28 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\HomeController;
+use App\Http\Controllers\admin\PageController;
+use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\BrandController;
+use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\client\AuthController;
 use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\ShopController;
+use App\Http\Controllers\admin\RatingController;
+use App\Http\Controllers\client\VnPayController;
 use App\Http\Controllers\admin\ProductController;
+use App\Http\Controllers\admin\ShipperController;
 use App\Http\Controllers\client\ClientController;
 use App\Http\Controllers\admin\CategoryController;
-use App\Http\Controllers\admin\DiscountCouponController;
-use App\Http\Controllers\admin\OrderController;
+use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\client\LocationController;
 use App\Http\Controllers\admin\ProductImageController;
-use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\client\LoginGoogleController;
-use App\Http\Controllers\client\VnPayController;
+use App\Http\Controllers\shipper\ShipperAuthController;
+use App\Http\Controllers\admin\DiscountCouponController;
+use App\Http\Controllers\shipper\ShipperOrderController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -30,6 +36,7 @@ use App\Http\Controllers\client\VnPayController;
 // });
 //Client Route
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
+Route::get('/collection', [ClientController::class, 'collection'])->name('client.collection');
 Route::get('/shop/{categorySlug?}/{brand?}', [ShopController::class, 'index'])->name('client.shop');
 Route::get('/product/{id}', [ShopController::class, 'product'])->name('client.product');
 Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
@@ -47,6 +54,9 @@ Route::get('/apply-discount/{province_id}/{code}', [CartController::class, 'appl
 Route::get('/remove-discount/{province_id}', [CartController::class, 'removeDiscount'])->name('client.removeDiscount');
 // Route::post('/get-order-summary', [CartController::class, 'getOrderSummary'])->name('client.getOrderSummary');
 Route::post('/add-to-wishlist', [ClientController::class, 'addToWishList'])->name('client.addToWishList');
+Route::get('/page/{slug}', [ClientController::class, 'page'])->name('client.page');
+Route::post('/send-contact-email', [ClientController::class, 'sendContactEmail'])->name('client.sendContactEmail');
+
 
 // Location
 Route::get('/districts/{province_id}', [LocationController::class, 'getDistricts'])->name('client.getDistricts');
@@ -66,11 +76,16 @@ Route::group(['prefix' => 'account'], function () {
         Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('account.authenticate');
         Route::get('/register', [AuthController::class, 'register'])->name('account.register');
         Route::post('/process-register', [AuthController::class, 'processRegister'])->name('account.processRegister');
+        Route::get('/forgot-password-form', [AuthController::class, 'forgotPasswordForm'])->name('account.forgotPasswordForm');
+        Route::post('/process-forgot-password', [AuthController::class, 'processForgotPassword'])->name('account.processForgotPassword');
+        Route::get('/reset-password/{token}', [AuthController::class, 'resetPassword'])->name('account.resetPassword');
+        Route::post('/process-reset-password', [AuthController::class, 'processResetPassword'])->name('account.processResetPassword');
 
 
     });
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/profile', [AuthController::class, 'profile'])->name('account.profile');
+        Route::post('/update-profile', [AuthController::class, 'updateProfile'])->name('account.updateProfile');
         Route::get('/address', [AuthController::class, 'address'])->name('account.address');
         Route::post('/update-address', [AuthController::class, 'updateAddress'])->name('account.updateAddress');
         Route::get('/my-order', [AuthController::class, 'orders'])->name('account.orders');
@@ -78,6 +93,9 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/wishlist', [AuthController::class, 'wishlist'])->name('account.wishlist');
         Route::post('/remove-product-from-wishlist', [AuthController::class, 'removeProductFromWishlist'])->name('account.removeProductFromWishlist');
         Route::get('/logout', [AuthController::class, 'logout'])->name('account.logout');
+        Route::get('/change-password-form', [AuthController::class, 'showChangePasswordForm'])->name('account.showChangePasswordForm');
+        Route::post('/change-password', [AuthController::class, 'changePassword'])->name('account.changePassword');
+        Route::post('/save-rating/{product_id}', [ShopController::class, 'saveRating'])->name('account.saveRating');
     });
 });
 
@@ -115,6 +133,12 @@ Route::group(['prefix' => 'admin'], function () {
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
 
+        // Rating Route
+        Route::get('/ratings', [RatingController::class, 'productRating'])->name('ratings.productRating');
+        Route::get('/ratings/change-status', [RatingController::class, 'changeRatingStatus'])->name('ratings.changeRatingStatus');
+
+
+
         // Shipping Route
         Route::get('/shipping/create', [ShippingController::class, 'create'])->name('shipping.create');
         Route::post('/shipping/create', [ShippingController::class, 'store'])->name('shipping.store');
@@ -135,6 +159,30 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/orders/detail/{id}', [OrderController::class, 'detail'])->name('orders.detail');
         Route::post('/orders/change-order-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
 
+        // User Route
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
+
+        // Shipper Route
+        Route::get('/shippers', [ShipperController::class, 'index'])->name('shippers.index');
+        Route::get('/shippers/create', [ShipperController::class, 'create'])->name('shippers.create');
+        Route::post('/shippers', [ShipperController::class, 'store'])->name('shippers.store');
+        Route::get('/shippers/{shipper}/edit', [ShipperController::class, 'edit'])->name('shippers.edit');
+        Route::put('/shippers/{shipper}', [ShipperController::class, 'update'])->name('shippers.update');
+        Route::delete('/shippers/{shipper}', [ShipperController::class, 'destroy'])->name('shippers.delete');
+
+        // Page Route
+        Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
+        Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
+        Route::post('/pages', [PageController::class, 'store'])->name('pages.store');
+        Route::get('/pages/{page}/edit', [PageController::class, 'edit'])->name('pages.edit');
+        Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
+        Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.delete');
+
         //product update image
         Route::post('/product-images/update', [ProductImageController::class, 'update'])->name('product-images.update');
         Route::delete('/product-images', [ProductImageController::class, 'destroy'])->name('product-images.delete');
@@ -151,5 +199,25 @@ Route::group(['prefix' => 'admin'], function () {
                 'slug' => $slug
             ]);
         })->name('getSlug');
+    });
+});
+// Route::get('/shipper/login', [ShipperAuthController::class, 'index'])->name('shipper.login');
+// Route::post('/shipper/authenticate', [ShipperAuthController::class, 'authenticate'])->name('shipper.authenticate');
+// Route::get('/shipper/dashboard', [ShipperAuthController::class, 'dashboard'])->name('shipper.dashboard');
+Route::group(['prefix' => 'shipper'], function () {
+    Route::group(['middleware' => 'shipper.guest'], function () {
+        Route::get('/login', [ShipperAuthController::class, 'index'])->name('shipper.login');
+        Route::post('/authenticate', [ShipperAuthController::class, 'authenticate'])->name('shipper.authenticate');
+    });
+    Route::group(['middleware' => 'shipper.auth'], function () {
+        Route::get('/dashboard', [ShipperAuthController::class, 'dashboard'])->name('shipper.dashboard');
+        Route::get('/logout', [ShipperAuthController::class, 'logout'])->name('shipper.logout');
+
+        // Shipper Order
+        Route::get('/shipper-order', [ShipperOrderController::class, 'index'])->name('shipperOrder.index');
+        Route::get('/shipper-order-delivered', [ShipperOrderController::class, 'orderDelivered'])->name('shipperOrder.orderDelivered');
+        Route::get('/shipper-order/detail/{id}', [ShipperOrderController::class, 'detail'])->name('shipperOrder.orderDetail');
+        Route::post('/shipper-order/send-mail-admin/{order_id}', [ShipperOrderController::class, 'sendMail'])->name('shipperOrder.sendMail');
+
     });
 });

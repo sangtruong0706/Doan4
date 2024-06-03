@@ -95,7 +95,7 @@
                     </table>
                 </div>
                 <div class="card-footer clearfix">
-                    {{ $brands->links() }}
+                    {{ $brands->links('vendor.pagination.custom_admin') }}
                 </div>
             </div>
         </div>

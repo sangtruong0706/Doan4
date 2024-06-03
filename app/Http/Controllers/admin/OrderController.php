@@ -9,6 +9,7 @@ use App\Models\Province;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Shipper;
 
 class OrderController extends Controller
 {
@@ -33,24 +34,30 @@ class OrderController extends Controller
     }
     public function detail($orderId) {
         $data=[];
+        $shippers = Shipper::orderBy('id', 'asc')->get();
         $provinces = Province::orderBy('id', 'asc');
         $districts = District::orderBy('id', 'asc');
         $wards = Ward::orderBy('id', 'asc');
         $order = Order::where('id', $orderId)->first();
         $orderItems = OrderItem::where('order_id', $orderId)->get();
+        $ShipperOfOrder = Shipper::where('id', $order->shipper_id)->first();
         $data = [
             'order' => $order,
             'orderItems' => $orderItems,
             'province' => $order->province ? $order->province->name : null,
             'district' => $order->district ? $order->district->name : null,
             'ward' => $order->ward ? $order->ward->name : null,
+            'shippers' => $shippers,
+            'ShipperOfOrder' => $ShipperOfOrder,
         ];
         return view('admin.orders.detail', $data);
     }
     public function changeOrderStatus(Request $request, $orderId) {
         $order = Order::find($orderId);
         $order->order_status = $request->status;
+        $order->payment_status = $request->payment_status;
         $order->shipped_date = $request->shipped_date;
+        $order->shipper_id = $request->shipper_id;
         $order->save();
         session()->flash('success', 'Order change status successfully');
         return response()->json([

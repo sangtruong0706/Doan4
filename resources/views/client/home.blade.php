@@ -11,7 +11,7 @@
           <div class="grid__item large--six-twelfths push--large--three-twelfths">
              <h1>Something About Us</h1>
              <p>Watches. We rely on them to get us where we need be on time.And with proper care, they will do just that. It's an uncomplicated relationship. But is that all you expect in a Watch?, Not a chance. And is that all our watch designs strive toward? Well, you know the answer. Your wrist watch just might be the most defining accessory you could choose. Whether your taste runs the gamut of designer watches to expensive watches even sport multifunction watches we know that what you put on your wrist takes thought and maybe even a little time (how ironic) to settle on. It's because you know that at a glance, your watch says something about you. And for the curious, it gives Just enough insight as to who you are.</p>
-             <a href="/pages/about-us" class="btn btn--large">View More</a>
+             <a href="{{ route("client.page",'about-us') }}" class="btn btn--large">View More</a>
           </div>
        </div>
     </div>

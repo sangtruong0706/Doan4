@@ -37,7 +37,19 @@
                         <p>Products</p>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a href="{{ route('shippers.index') }}" class="nav-link {{ request()->routeIs("shippers.*") ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-tag"></i>
+                        <p>Shipper</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route("ratings.productRating") }}" class="nav-link {{ request()->routeIs("ratings.*") ? 'active' : '' }}">
+                        {{-- <i class="nav-icon  far fa-file-alt"></i> --}}
+                        <i class=" nav-icon far fa-solid fa-star"></i>
+                        <p>Rating</p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{ route("shipping.create") }}" class="nav-link {{ request()->routeIs("shipping.*") ? 'active' : '' }}">
                         <!-- <i class="nav-icon fas fa-tag"></i> -->
@@ -58,17 +70,18 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="users.html" class="nav-link">
+                    <a href="{{ route("users.index") }}" class="nav-link {{ request()->routeIs("users.*") ? 'active' : '' }}">
                         <i class="nav-icon  fas fa-users"></i>
                         <p>Users</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages.html" class="nav-link">
+                    <a href="{{ route("pages.index") }}" class="nav-link {{ request()->routeIs("pages.*") ? 'active' : '' }}">
                         <i class="nav-icon  far fa-file-alt"></i>
                         <p>Pages</p>
                     </a>
                 </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

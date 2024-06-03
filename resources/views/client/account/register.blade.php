@@ -6,7 +6,6 @@
       <div class="grid">
          <div class="grid__item one-whole">
             <div class="breadcrumb_item">
-               <!-- /snippets/breadcrumb.liquid -->
                <ul>
                   <li><a href="{{ route("client.home") }}" title="Back to the frontpage">Home</a></li>
                   <li>Register</li>
@@ -33,6 +32,10 @@
                      </div>
                      <div class="row">
                         <input type="email" name="email" id="email" class="input-full form-control" placeholder="Email" >
+                        <p></p>
+                     </div>
+                     <div class="row">
+                        <input type="text" name="phone" id="phone" class="input-full form-control" placeholder="Phone" >
                         <p></p>
                      </div>
                      <div class="row">
@@ -85,6 +88,13 @@
                             $("#email").siblings('p').removeClass('invalid-feedback').html('');
                             $("#email").removeClass('is-invalid');
                         }
+                        if (error['phone']) {
+                            $("#phone").siblings('p').addClass('invalid-feedback').html(error['phone']);
+                            $("#phone").addClass('is-invalid');
+                        }else {
+                            $("#email").siblings('p').removeClass('invalid-feedback').html('');
+                            $("#email").removeClass('is-invalid');
+                        }
                         if (error['password']) {
                             $("#password").siblings('p').addClass('invalid-feedback').html(error['password']);
                             $("#password").addClass('is-invalid');
@@ -104,6 +114,8 @@
                             $("#name").removeClass('is-invalid');
                             $("#email").siblings('p').removeClass('invalid-feedback').html('');
                             $("#email").removeClass('is-invalid');
+                            $("#phone").siblings('p').removeClass('invalid-feedback').html('');
+                            $("#phone").removeClass('is-invalid');
                             $("#password").siblings('p').removeClass('invalid-feedback').html('');
                             $("#password").removeClass('is-invalid');
                             $("#password_confirmation").siblings('p').removeClass('invalid-feedback').html('');

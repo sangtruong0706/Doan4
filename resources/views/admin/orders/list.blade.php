@@ -68,7 +68,7 @@
                                                 <span class="badge bg-success">Delivery</span>
                                             @endif
                                         </td>
-                                        <td>{{ number_format($order->grand_total, 0, ',', '.') }} vnđ</td>
+                                        <td>{{ number_format($order->grand_total, 0, ',' , '.') }} vnđ</td>
                                         <td> {{ \Carbon\Carbon::parse($order->created_at)->format('d-m-Y') }}</td>
                                         <td>{{ $order->payment_method }}</td>
                                         <td>{{ $order->payment_status }}</td>

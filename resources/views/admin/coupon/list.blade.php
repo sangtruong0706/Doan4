@@ -110,9 +110,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer clearfix">
-                    {{ $discountCoupons->links() }}
-                </div>
+                {{ $discountCoupons->links('vendor.pagination.custom_admin') }}
             </div>
         </div>
         <!-- /.card -->

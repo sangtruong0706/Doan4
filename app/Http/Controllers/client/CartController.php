@@ -207,18 +207,25 @@ class CartController extends Controller
         $data['customerDistrict'] = $district;
         $data['customerWard'] = $ward;
         $data['discount'] = $discount;
+        $data['user'] = $user;
 
         // calculate shipping charges
-        $userProvince = $customerAddress->province_id;
-        $shippingCharge = ShippingCharge::where('province_id', $userProvince)->first();
-        if ($discount > 0) {
-            $grandTotal = ($subTotal-$discount) + $shippingCharge->amount;
-        }else {
-            $grandTotal = $subTotal + $shippingCharge->amount;
-        }
+        if ($customerAddress == null){
+            $data['provinces'] = $provinces;
+            $data['shippingCharge'] = 0;
+            $data['grandTotal'] = $subTotal;
+        }else{
+            $userProvince = $customerAddress->province_id;
+            $shippingCharge = ShippingCharge::where('province_id', $userProvince)->first();
+            if ($discount > 0) {
+                $grandTotal = ($subTotal-$discount) + $shippingCharge->amount;
+            }else {
+                $grandTotal = $subTotal + $shippingCharge->amount;
+            }
 
-        $data['shippingCharge'] = $shippingCharge->amount;
-        $data['grandTotal'] = $grandTotal;
+            $data['shippingCharge'] = $shippingCharge->amount;
+            $data['grandTotal'] = $grandTotal;
+        }
         return view('client.checkout', $data);
     }
     // public function processCheckout(Request $request) {

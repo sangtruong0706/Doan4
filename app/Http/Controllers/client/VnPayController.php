@@ -40,7 +40,7 @@ class VnPayController extends Controller
                 // Bạn có thể cập nhật trạng thái đơn hàng tại đây
                 // Ví dụ:
                 $order = Order::find($request->query('vnp_TxnRef'));
-                $order->payment_status = 'Đã thanh toán';
+                $order->payment_status = 'paid';
                 $order->save();
                 // Send Order Email
                 OrderEmail($order->id);

@@ -121,26 +121,38 @@
                             <label for="shipped_date">Shipped_date</label>
                             <input placeholder="Shipped date" autocomplete="off" type="text" class="form-control" name="shipped_date" id="shipped_date" value="{{ $order->shipped_date }}">
                         </div>
+                        <h2 class="h4 mb-3">Payment Status</h2>
+                        <div class="mb-3">
+                            <select name="payment_status" id="payment_status" class="form-control">
+                                <option value="paid" {{ $order->payment_status == 'paid' ? 'selected' : '' }}>Paid</option>
+                                <option value="unpaid" {{ $order->payment_status == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+                            </select>
+                            
+                        </div>
+                        <div class="mb-3">
+                            <h2 class="h4 mb-3">Assign Shipper</h2>
+                            <select name="shipper_id" id="shipper_id" class="form-control">
+                                @if ($order->shipper_id != null)
+                                    @if ($order->shipper_id == $ShipperOfOrder->id)
+                                        <option value="{{ $ShipperOfOrder->id }}">Shipper: {{ $ShipperOfOrder->full_name }}</option>
+                                    @endif
+                                @endif
+
+                                @if ($shippers->isNotEmpty())
+                                <option value="">--Select shipper--</option>
+                                    @foreach ($shippers as $shipper )
+                                        <option value="{{ $shipper->id }}">Shipper: {{ $shipper->full_name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                         </div>
                     </form>
                  </div>
-                 <div class="card">
-                    <div class="card-body">
-                       <h2 class="h4 mb-3">Send Inovice Email</h2>
-                       <div class="mb-3">
-                          <select name="status" id="status" class="form-control">
-                             <option value="">Customer</option>
-                             <option value="">Admin</option>
-                          </select>
-                       </div>
-                       <div class="mb-3">
-                          <button class="btn btn-primary">Send</button>
-                       </div>
-                    </div>
-                 </div>
+
               </div>
            </div>
         </div>

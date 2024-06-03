@@ -203,43 +203,6 @@ class ProductController extends Controller
                     $productDetail->save();
                 }
             }
-            // save gallery images
-            // if (!empty($request->image_array)){
-            //     foreach($request->image_array as $temp_image_id) {
-
-            //         $temImageInfo = TempImage::find($temp_image_id);
-            //         $extArray = explode('.', $temImageInfo->name);
-            //         //171543077.jpg
-            //         $ext = last($extArray); // like jpg,gif,png
-
-            //         $productImage = new ProductImage();
-            //         $productImage->product_id = $product->id;
-            //         $productImage->image = "NULL";
-            //         $productImage->save();
-
-            //         $imageName = $product->id.'-'.$productImage->id.'-'.time().'.'.$ext;
-            //         // product_id = 1; product-image-id = 1
-            //         // name image = 4-1-23444.jpg
-            //         $productImage->image = $imageName;
-            //         $productImage->save();
-
-            //         //Generate product thumbnail
-            //         //Large Image
-            //         $sourcePath = public_path().'/temp/'.$temImageInfo->name;
-            //         $destPath = public_path().'/uploads/product/large/'.$imageName;
-            //         $image = Image::make($sourcePath);
-            //         $image->resize(1400, null, function($constraint) {
-            //             $constraint->aspectRatio();
-            //         });
-            //         $image->save($destPath);
-
-            //         //Small Image
-            //         $destPath = public_path().'/uploads/product/small/'.$imageName;
-            //         $image = Image::make($sourcePath);
-            //         $image->fit(460, 460);
-            //         $image->save($destPath);
-            //     }
-            // }
             session()->flash('success', 'Product added successfully');
             return response()->json([
                 'status' => true,

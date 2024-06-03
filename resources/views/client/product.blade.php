@@ -152,6 +152,25 @@
                                 <p>{{ $product->product_code }} </p>
                             </div>
                             <div class="detail_row">
+                                <div class="star-rating mt-2" title="70%">
+                                    <div class="back-stars">
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        <div class="front-stars" style="width: {{ $avgRatingPer }}%">
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+                                    <p class="mx-2">({{ ($product->ratings_count > 1) ? $product->ratings_count.' Reviews' : $product->ratings_count.' Review' }})</p>
+                                </div>
+                            </div>
+                            <div class="detail_row">
                                 <h4><span>Share this</span>:</h4>
                                 <ul>
                                 <li>
@@ -270,45 +289,119 @@
                 </div>
                 <div class="tabify_desc">
                     <div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
-                    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-                        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#tabs-1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">Description</a></li>
-                        <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-2" aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#tabs-2" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-2">Shipping</a></li>
-                        <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-3" aria-labelledby="ui-id-3" aria-selected="false" aria-expanded="false"><a href="#tabs-3" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-3">Reviews</a></li>
-                    </ul>
-                    <div id="tabs-1" class="tabs_desc ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-hidden="false">
-                        <p>
-                            {!! $product->description !!}
-                        </p>
-                    </div>
-                    <div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="true" style="display: none;">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </div>
-                    <div id="tabs-3" aria-labelledby="ui-id-3" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="true" style="display: none;">
-                        <div id="shopify-product-reviews" data-id="8162296584">
-                            <style scoped="">.spr-container {
-                                padding: 24px;
-                                border-color: #ECECEC;}
-                                .spr-review, .spr-form {
-                                border-color: #ECECEC;
-                                }
-                            </style>
-                            <div class="spr-container">
-                                <div class="spr-header">
-                                <h2 class="spr-header-title">Customer Reviews</h2>
-                                <div class="spr-summary">
-                                    <span class="spr-summary-caption">No reviews yet</span><span class="spr-summary-actions">
-                                    <a href="#" class="spr-summary-actions-newreview" onclick="SPR.toggleForm(8162296584);return false">Write a review</a>
-                                    </span>
-                                </div>
-                                </div>
-                                <div class="spr-content">
-                                <div class="spr-form" id="form_8162296584" style="display: none"></div>
-                                <div class="spr-reviews" id="reviews_8162296584" style="display: none"></div>
-                                </div>
-                            </div>
+                        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                            <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#tabs-1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">Description</a></li>
+                            <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-2" aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#tabs-2" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-2">Shipping</a></li>
+                            <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-3" aria-labelledby="ui-id-3" aria-selected="false" aria-expanded="false"><a href="#tabs-3" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-3">Reviews</a></li>
+                        </ul>
+                        <div id="tabs-1" class="tabs_desc ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-hidden="false">
+                            <p>
+                                {!! $product->description !!}
+                            </p>
                         </div>
-                    </div>
+                        <div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="true" style="display: none;">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        </div>
+                        <div id="tabs-3" aria-labelledby="ui-id-3" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="true" style="display: none;">
+                            <div class="col-md-8">
+                            @auth
+                                {{-- @php
+                                    $hasPurchased = \App\Models\OrderItem::where('product_id', $product->id)
+                                        ->whereHas('order', function($query) {
+                                            $query->where('user_id', Auth::id());
+                                        })->exists();
+                                @endphp --}}
+                                @if ($hasPurchased == true)
+                                    <div class="row">
+                                    <h3 class="h4 pb-3">Write a Review</h3>
+                                    <form action="" method="post" name="productRatingForm" id="productRatingForm">
+                                            <div class="form-group mb-3">
+                                                <label for="rating">Rating</label>
+                                                <br>
+                                                <div id="rating" class="rating" style="width: 10rem; display:flex;">
+                                                    <input id="rating-5" type="radio" name="rating" value="5"/><label style="background: none!important;" for="rating-5"><i class="fas fa-3x fa-star"></i></label>
+                                                    <input id="rating-4" type="radio" name="rating" value="4"  /><label style="background: none!important;"  for="rating-4"><i class="fas fa-3x fa-star"></i></label>
+                                                    <input id="rating-3" type="radio" name="rating" value="3"/><label style="background: none!important;"  for="rating-3"><i class="fas fa-3x fa-star"></i></label>
+                                                    <input id="rating-2" type="radio" name="rating" value="2"/><label style="background: none!important;"  for="rating-2"><i class="fas fa-3x fa-star"></i></label>
+                                                    <input id="rating-1" type="radio" name="rating" value="1"/><label style="background: none!important;"  for="rating-1"><i class="fas fa-3x fa-star"></i></label>
+                                                </div>
+                                                <p></p>
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label for="">How was your overall experience?</label>
+                                                <textarea name="comment"  id="comment" class="input-full" cols="30" rows="6" placeholder="How was your overall experience?"></textarea>
+                                                <p></p>
+                                            </div>
+                                            <div>
+                                                <button type="submit" class="btn btn-dark">Submit</button>
+                                            </div>
+                                        </form>
+                                    <div class="col-md-12 mt-5">
+                                        <div class="overall-rating mb-3">
+                                            <div class="d-flex">
+                                                <h1 class="h3 pe-3">{{ $avgRating }}</h1>
+                                                <div class="star-rating mt-2" title="70%">
+                                                    <div class="back-stars">
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <div class="front-stars" style="width: {{ $avgRatingPer }}%">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="pt-2 ps-2">({{ ($product->ratings_count > 1) ? $product->ratings_count.' Reviews' : $product->ratings_count.' Review' }} )</div>
+                                            </div>
+                                        </div>
+                                        @if ($product->ratings->isNotEmpty())
+                                            @foreach ($product->ratings as $rating )
+                                                @php
+                                                    $ratingPer = ($rating->rating)*100/5;
+                                                @endphp
+
+                                                <div class="rating-group mb-4">
+                                                    <span class="author"><strong>{{ $rating->user->name }} </strong></span>
+                                                    <div class="star-rating mt-2" >
+                                                        <div class="back-stars">
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <div class="front-stars" style="width: {{ $ratingPer }}%">
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                            <i class="fa fa-star" aria-hidden="true"></i>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="my-3">
+                                                        <p>
+                                                            {{ $rating->comment }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @endif
+
+                                    </div>
+                                    </div>
+                                @else
+                                    <p>You can only rate products you have purchased.</p>
+                                @endif
+                            @else
+                                <p>Please <a style="font-size:14px; color:#d63612; font-weight:700;" href="{{ route('account.login') }}">Login</a> to rate this product.</p>
+                            @endauth
+                        </div>
                     </div>
                 </div>
                 <div class="related_products">
@@ -485,5 +578,38 @@
                 },
             })
         }
+
+        $("#productRatingForm").submit(function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: '{{ route("account.saveRating", $product->id) }}',
+                type: 'post',
+                data: $(this).serializeArray(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == true) {
+                        window.location.href = '{{ route("client.product", $product->id) }}'
+                    } else {
+                        var errors = response.errors;
+                        if (errors.rating) {
+                            $("#rating").addClass('is-invalid').siblings('p')
+                            .addClass('invalid-feedback').html(errors.rating);
+                        }else {
+                            $("#rating").removeClass('is-invalid').siblings('p')
+                            .addClass('invalid-feedback').html("");
+                        }
+                        if (errors.comment) {
+                            $("#comment").addClass('is-invalid').siblings('p')
+                            .addClass('invalid-feedback').html(errors.comment);
+                        }else {
+                            $("#comment").removeClass('is-invalid').siblings('p')
+                            .addClass('invalid-feedback').html("");
+                        }
+                    }
+
+
+                },
+            })
+        });
     </script>
 @endsection

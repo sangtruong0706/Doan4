@@ -94,9 +94,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer clearfix">
-                    {{ $categories->links() }}
-                </div>
+                {{ $categories->links('vendor.pagination.custom_admin') }}
             </div>
         </div>
         <!-- /.card -->
