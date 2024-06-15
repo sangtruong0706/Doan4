@@ -5,7 +5,6 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" integrity="sha384-4LISF5TTJX/fLmGSxO53rV4miRxdg84mZsxmO8Rx5jGtp/LbrixFETvWa5a6sESd" crossorigin="anonymous">
       <!-- Google Tag Manager -->
-      {{-- <script src="{{ asset ("client-asset/js/gmt.js") }}" type="text/javascript"></script> --}}
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
       <!-- Basic page needs ================================================== -->
       <meta charset="utf-8">
@@ -19,46 +18,29 @@
       <link href="{{ asset("client-asset/css/style.scss.css") }}" rel="stylesheet" type="text/css" media="all" />
       <link href="{{ asset("client-asset/css/rating.css") }}" rel="stylesheet" type="text/css" media="all" />
       <link href="{{ asset("client-asset/css/ion.rangeSlider.min.css") }}" rel="stylesheet" type="text/css" media="all" />
-      {{-- <link href='https://fonts.googleapis.com/css?family=Ubuntu:400,400italic,300,500,700' rel='stylesheet' type='text/css'> --}}
       <link href="{{ asset ("client-asset/font/font-awesome.css") }}" rel="stylesheet" type="text/css" media="all" />
-      {{-- <link href="{{ asset ("client-asset/owl_carousel/owl.carousel.css") }}" rel="stylesheet" type="text/css" media="all" /> --}}
       <link href="{{ asset ("client-asset/css/jquery-ui.css") }}" rel="stylesheet" type="text/css" media="all" />
-      {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" /> --}}
-
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-
-
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
       <!-- js ================================================== -->
       <script src="{{ asset ("client-asset/js/jquery.min.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/jquery.bxslider.js") }}" type="text/javascript"></script>
-      {{-- <script src="{{ asset ("client-asset/js/owl.carousel.min.js") }}" type="text/javascript"></script> --}}
       <script src="{{ asset ("client-asset/js/jquery.meanmenu.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/jquery-ui.js") }}" type="text/javascript"></script>
-      <script src="{{ asset ("client-asset/js/grids.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/fastclick.min.js") }}" type="text/javascript"></script>
       <script src="{{ asset ("client-asset/js/hulkthemes.js") }}" type="text/javascript"></script>
 
-
-
-
       <script src="{{ asset ("client-asset/js/chicago.js") }}" type="text/javascript"></script>
-      <script src="{{ asset ("client-asset/js/jquery.history.js") }}" type="text/javascript"></script>
-      {{-- <script src="{{ asset ("client-asset/js/shopify-modules.js") }}" type="text/javascript"></script> --}}
-      <script src="{{ asset ("client-asset/js/shopify-analytics-setup.js") }}" type="text/javascript"></script>
-      {{-- <script src="{{ asset ("client-asset/js/shopify-features.js") }}" type="text/javascript"></script> --}}
-      <script src="{{ asset ("client-asset/js/jquery.cookie.js") }}" type="text/javascript"></script>
-      <script src="{{ asset ("client-asset/js/handlebars.min.js") }}" type="text/javascript"></script>
-      {{-- <script src="{{ asset ("client-asset/js/modernizr.min.js") }}" type="text/javascript"></script> --}}
-      {{-- <script src="{{ asset ("client-asset/js/jquery.zoom.js") }}" type="text/javascript"></script> --}}
       <!-- Body font -->
       <link href="{{ asset ("client-asset/font/font.css") }}" rel="stylesheet" type="text/css" media="all" />
 
       <meta name="csrf-token" content="{{ csrf_token() }}">
    </head>
    <body  class="template-index" >
+    {{-- <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-modal"></div>
+    </div> --}}
+
       <div id="PageContainer">
          <header>
             <!-- Header Start -->
@@ -97,9 +79,9 @@
                            <div class="opened_search">
                               <!-- form serch-->
                               <form action="{{ route("client.shop") }}" method="get"  role="search" autocomplete="off">
-                                 <input value="{{ Request::get('keyword') }}" id="keyword" type="search" name="keyword" id="search-input"  placeholder="Search Products here...." required>
+                                 <input value="{{ Request::get('keyword') }}" id="keyword" type="search" name="keyword" id="search-input"  placeholder="Search Products here...." required data-provide="typeahead">
                                  <input type="submit"/>
-                                 <!-- <button type="submit"><img src="assets/img/svg/search-ico.svg"alt=""></button> -->
+
                               </form>
                            </div>
                            <div class="opened_account {{ Auth::check() ? 'login active' : '' }}">
@@ -126,13 +108,13 @@
                            <nav id="main-nav">
                               <!-- start menu -->
                               <ul>
-                                 <li class=" active">
+                                 <li class="{{ request()->routeIs('client.home') ? 'active' : '' }}">
                                     <a href="{{ route("client.home") }}">Home</a>
                                  </li>
-                                 <li class=" ">
+                                 <li class="{{ request()->routeIs('client.collection') ? 'active' : '' }}">
                                     <a href="{{ route("client.collection") }}">Collections</a>
                                  </li>
-                                 <li class="has-sub ">
+                                 <li class="has-sub {{ request()->routeIs('client.shop') ? 'active' : '' }}">
                                     <a href="{{ route("client.shop") }}">Shop</a>
                                     <ul>
                                         @if (getCategories()->isNotEmpty())
@@ -145,11 +127,11 @@
                                     </ul>
                                     <!-- END SECOND LEVEL -->
                                  </li>
-                                 <li class=" ">
-                                    <a href="pages/blog.html">Blog</a>
+                                 <li class=" {{ request()->routeIs('client.blog') ? 'active' : '' }}">
+                                    <a href="{{ route("client.blog") }}">Blog</a>
                                     <!-- END SECOND LEVEL -->
                                  </li>
-                                 <li class="has-sub ">
+                                 <li class="has-sub {{ request()->routeIs('client.page') ? 'active' : '' }}">
                                     <a href="#">Pages</a>
                                     <!-- START SECOND LEVEL -->
                                     <ul>
@@ -179,15 +161,9 @@
                </div>
             </div>
          </header>
-         <!-- /templates/index.liquid -->
-
          <!-- content start -->
          @yield('content')
          <!-- content end -->
-
-         {{-- <script src="client-asset/js/instafeed.min.js" type="text/javascript"></script>
-         <script src="client-asset/js/instagram.js" type="text/javascript"></script> --}}
-         {{-- <script src="client-asset/js/parallax.js" type="text/javascript"></script> --}}
          <footer>
             <!-- Footer Start -->
             <div class="container">
@@ -298,8 +274,8 @@
            </div>
         </div>
         <div id="CartContainer">
-              <div class="ajaxcart__inner">
-                @if ($cartContent->isNotEmpty())
+            @if ($cartContent->isNotEmpty())
+                <div class="ajaxcart__inner">
                     @foreach ($cartContent as $item)
                         <div class="ajaxcart__product">
                             <div class="ajaxcart__row" data-line="">
@@ -328,79 +304,53 @@
                             </div>
                         </div>
                     @endforeach
-                @else
-
-                @endif
-                 <div class="ajaxcart__footer">
-                    <div class="grid--full">
-                       <div class="grid__item one-half">
-                          <p class="ajax_subtotal">Order Total</p>
-                       </div>
-                       <div class="grid__item one-half text-right">
-                        @if ($cartContent->count() > 0)
-                            @foreach ($cartContent as $item)
+                    <div class="ajaxcart__footer">
+                        <div class="grid--full">
+                        <div class="grid__item one-half">
+                            <p class="ajax_subtotal">Order Total</p>
+                        </div>
+                        <div class="grid__item one-half text-right">
+                            @if ($cartContent->count() > 0)
+                                @foreach ($cartContent as $item)
+                                    @php
+                                        $subTotal = $item->price * $item->qty;
+                                    @endphp
+                                @endforeach
+                            @else
                                 @php
-                                    $subTotal = $item->price * $item->qty;
+                                    $subTotal = 0;
                                 @endphp
-                            @endforeach
-                        @else
-                             @php
-                                $subTotal = 0;
-                            @endphp
-                        @endif
-                          <p>{{ number_format( ($subTotal), 0, ',', '.') }} vnđ</p>
-                       </div>
+                            @endif
+                            <p>{{ number_format( ($subTotal), 0, ',', '.') }} vnđ</p>
+                        </div>
+                        </div>
+                        <a href="{{ route("client.checkout") }}" class="btn btn--full cart__checkout" name="checkout">
+                        Checkout &rarr;
+                        </a>
+                        <a href="{{ route("client.cart") }}" class="cart_redirect"> View Cart <span><i class="fa fa-angle-right"></i></span></a>
                     </div>
-                    <a href="{{ route("client.checkout") }}" class="btn btn--full cart__checkout" name="checkout">
-                    Checkout &rarr;
-                    </a>
-                    <a href="{{ route("client.cart") }}" class="cart_redirect"> View Cart <span><i class="fa fa-angle-right"></i></span></a>
-                 </div>
                 </div>
+            @else
+                <p>Your cart is currently empty.</p>
+            @endif
+
         </div>
-
-
-
-
-
-      <script id="CartTemplate" type="text/template"></script>
+      </div>
       <script src="{{ asset ("client-asset/js/ajax-cart.js") }}" type="text/javascript"></script>
+      {{-- <script src="{{ asset ("client-asset/js/async-load-scripts.js") }}" type="text/javascript"></script> --}}
       <script src="{{ asset ("client-asset/js/ion.rangeSlider.min.js") }}" type="text/javascript"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
       <!-- AdRoll Pixel setup on 08 Dec 2017 -->
       {{-- <div id="messageBox"></div>
       <div class="loading-modal" data-translate="cart.ajax_cart.loading" style="display: none;">Loading...</div>
       <div class="body_overlay"></div> --}}
-      {{-- <script type="text/javascript">
-         adroll_adv_id = "TO7KTPCXQZHLBETWL6HGQY";
-         adroll_pix_id = "UL3L23DUERDGHMPNHSDKKZ";
-         /* OPTIONAL: provide email to improve user identification */
-         /* adroll_email = "username@example.com"; */
-         (function () {
-               var _onload = function(){
-                  if (document.readyState && !/loaded|complete/.test(document.readyState)){setTimeout(_onload, 10);return}
-                  if (!window.__adroll_loaded){__adroll_loaded=true;setTimeout(_onload, 50);return}
-                  var scr = document.createElement("script");
-                  var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
-                  scr.setAttribute('async', 'true');
-                  scr.type = "text/javascript";
-                  scr.src = host + "/j/roundtrip.js";
-                  ((document.getElementsByTagName('head') || [null])[0] ||
-                     document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
-               };
-               if (window.addEventListener) {window.addEventListener('load', _onload, false);}
-               else {window.attachEvent('onload', _onload)}
-         }());
-      </script> --}}
 
-      {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js"></script>
-      <script type="text/javascript">
+      {{-- <script type="text/javascript">
         var route = '{{ route("client.autocompleteSearch") }}';
         $('#search-input').typeahead({
             source: function (query, process) {
                 return $.get(route, { query: query }, function (data) {
-                    // Chuyển đổi dữ liệu trả về thành một mảng chứa các tiêu đề sản phẩm
                     var titles = data.map(function(item) {
                         return item.title;
                     });
@@ -411,10 +361,10 @@
                 return item;
             },
             afterSelect: function(item) {
-                console.log('Selected Item:', item); // Kiểm tra giá trị đã chọn
+                console.log('Selected Item:', item);
             }
         });
-    </script>
+      </script> --}}
 
       <script type="text/javascript">
             $.ajaxSetup({
@@ -423,6 +373,21 @@
                 }
             });
         </script>
+        {{-- <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Hiển thị lớp phủ loading và thêm hiệu ứng làm mờ
+                document.querySelector('.body_overlay').style.display = 'block';
+                document.querySelector('.loading-modal').style.display = 'block';
+            });
+
+            window.addEventListener('load', function() {
+                // Ẩn lớp phủ loading và loại bỏ hiệu ứng làm mờ
+                document.querySelector('.body_overlay').style.display = 'none';
+                document.querySelector('.loading-modal').style.display = 'none';
+            });
+        </script> --}}
+
+
 
       <!-- End AdRoll Pixel setup on 08 Dec 2017 -->
       @yield('customJs')
@@ -444,7 +409,7 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         };
-    </script>
+      </script>
 
    </body>
 </html>

@@ -80,15 +80,6 @@
                             <?php
                             $productImage = $product->productImages;
                             ?>
-                            {{-- <ul id="product-images" class="product_slider" style="width: auto; position: relative;">
-                                @foreach ($productImage as $index => $image)
-                                    <li style="float: none; list-style: none; position: absolute; width: 618px; z-index: {{ $index == 0 ? '50' : '0' }}; display: {{ $index == 0 ? 'block' : 'none' }};" class="{{ $index == 0 ? 'active' : '' }}">
-                                        <span style="display: inline-block; max-width: 100%; position: relative; overflow: hidden;">
-                                            <img class="product-image" src="{{ asset('uploads/product/small/' . $image->image) }}" data-zoom-image="{{ asset('uploads/product/large/' . $image->image) }}" alt="Product Image {{ $index + 1 }}" style="display: block;">
-                                        </span>
-                                    </li>
-                                @endforeach
-                            </ul> --}}
                             <ul id="product-images" class="product_slider" style="width: auto; position: relative;">
                                 @foreach ($productImage as $index => $image)
                                     <li style="float: none; list-style: none; position: absolute; width: 618px; z-index: {{ $index == 0 ? '50' : '0' }}; display: {{ $index == 0 ? 'block' : 'none' }};" class="{{ $index == 0 ? 'active' : '' }}">
@@ -98,13 +89,6 @@
                                             </a>
                                         </span>
                                     </li>
-                                    {{-- <div class="product-image">
-                                        <img src="{{ asset('uploads/product/small/' . $image->image) }}" alt="Product Image" id="small-image">
-                                    </div>
-
-                                    <div class="product-zoom" id="zoom-container">
-                                        <img src="{{ asset('uploads/product/large/' . $image->image) }}" alt="Zoomed Image" id="large-image">
-                                    </div> --}}
                                 @endforeach
                             </ul>
 
@@ -113,9 +97,6 @@
                         <div class="bx-controls"></div>
                     </div>
                     </div>
-                    {{-- <ul style="display:none;">
-                    <li> <img src="//chicago-theme.myshopify.com/cdn/shop/products/SKW6106_main_large_ba79bc2b-181b-40af-8447-b48d83316c18_1024x1024.jpg?v=1487908443" alt="Ancher Leather Chronograph Watch" id="ProductPhotoImg">  </li>
-                    </ul> --}}
                     <div class="product_pager">
                     <div class="bx-wrapper" style="max-width: 165px;">
                             <div class="bx-viewport" style="width: 100%; overflow: hidden; position: relative; height: 378px;">
@@ -215,26 +196,6 @@
                                 </style>
                                 <script>$(window).load(function() { $('.selector-wrapper:eq(0)').hide(); });</script>
                                 <h4><span>Size</span>:</h4>
-                                {{-- <div class="swatch Size clearfix color_form" data-option-index="0">
-                                    <div data-value="X" class="row swatch-element x ">
-                                        <input id="swatch-0-x" type="radio" name="option-0" value="S" checked="">
-                                        <label for="swatch-0-x">
-                                        S
-                                        </label>
-                                    </div>
-                                    <div data-value="M" class="row swatch-element m ">
-                                        <input id="swatch-0-m" type="radio" name="option-0" value="M">
-                                        <label for="swatch-0-m">
-                                        M
-                                        </label>
-                                    </div>
-                                    <div data-value="L" class="row swatch-element l ">
-                                        <input id="swatch-0-l" type="radio" name="option-0" value="L">
-                                        <label for="swatch-0-l">
-                                        L
-                                        </label>
-                                    </div>
-                                </div> --}}
                                 <div class="swatch Size clearfix color_form" data-option-index="0">
                                         @foreach ($sizes as $size)
                                         <div data-value="{{ $size->name }}" class="row swatch-element {{ $size->name}}">
@@ -306,12 +267,6 @@
                         <div id="tabs-3" aria-labelledby="ui-id-3" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="true" style="display: none;">
                             <div class="col-md-8">
                             @auth
-                                {{-- @php
-                                    $hasPurchased = \App\Models\OrderItem::where('product_id', $product->id)
-                                        ->whereHas('order', function($query) {
-                                            $query->where('user_id', Auth::id());
-                                        })->exists();
-                                @endphp --}}
                                 @if ($hasPurchased == true)
                                     <div class="row">
                                     <h3 class="h4 pb-3">Write a Review</h3>
@@ -396,9 +351,73 @@
                                     </div>
                                     </div>
                                 @else
+                                    @if ($product->ratings->isNotEmpty())
+                                        @foreach ($product->ratings as $rating )
+                                            @php
+                                                $ratingPer = ($rating->rating)*100/5;
+                                            @endphp
+
+                                            <div class="rating-group mb-4">
+                                                <span class="author"><strong>{{ $rating->user->name }} </strong></span>
+                                                <div class="star-rating mt-2" >
+                                                    <div class="back-stars">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <div class="front-stars" style="width: {{ $ratingPer }}%">
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                <div class="my-3">
+                                                    <p>
+                                                        {{ $rating->comment }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                     <p>You can only rate products you have purchased.</p>
                                 @endif
                             @else
+                                @if ($product->ratings->isNotEmpty())
+                                    @foreach ($product->ratings as $rating )
+                                        @php
+                                            $ratingPer = ($rating->rating)*100/5;
+                                        @endphp
+
+                                        <div class="rating-group mb-4">
+                                            <span class="author"><strong>{{ $rating->user->name }} </strong></span>
+                                            <div class="star-rating mt-2" >
+                                                <div class="back-stars">
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <i class="fa fa-star" aria-hidden="true"></i>
+                                                <div class="front-stars" style="width: {{ $ratingPer }}%">
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div class="my-3">
+                                                <p>
+                                                    {{ $rating->comment }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
                                 <p>Please <a style="font-size:14px; color:#d63612; font-weight:700;" href="{{ route('account.login') }}">Login</a> to rate this product.</p>
                             @endauth
                         </div>

@@ -11,6 +11,8 @@ use App\Models\Wishlist;
 use App\Mail\ContactEmail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Blog;
+use App\Models\BlogCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -35,10 +37,12 @@ class ClientController extends Controller
                                     ->take(4)
                                     ->get();
         $pages = Page::orderBy('id','DESC')->get();
+        $blogs = Blog::orderBy('id','asc')->take(2)->get();
         $data['categories_index'] = $categories_index;
         $data['features_products'] = $features_products;
         $data['latest_products'] = $latest_products;
         $data['pages'] = $pages;
+        $data['blogs'] = $blogs;
         return view('client.home', $data);
     }
     public function collection() {
@@ -51,8 +55,39 @@ class ClientController extends Controller
         $data['brands'] = $brands;
         return view('client.collection', $data);
     }
-    public function autocompleteSearch(Request $request)
-    {
+    public function blog(Request $request, $categorySlug = null) {
+        $categorySelected = '';
+        $blogs = Blog::latest(); // Sắp xếp bài viết theo thứ tự mới nhất
+        $blog_categories = BlogCategory::orderBy('id', 'DESC')->get();
+
+        // Lọc theo danh mục
+        if (!empty($categorySlug)) {
+            if ($categorySlug == 'all'){
+                $blogs = Blog::latest();
+            }
+            $cate_blog = BlogCategory::where('slug', $categorySlug)->first();
+            if ($cate_blog) {
+                $blogs->where('blog_category_id', $cate_blog->id); // Sửa lại điều kiện lọc
+                $categorySelected = $cate_blog->id;
+            }
+        }
+
+        $blogs = $blogs->paginate(8);
+        $data['blogs'] = $blogs;
+        $data['blog_categories'] = $blog_categories;
+        $data['categorySelected'] = $categorySelected;
+        return view('client.blog', $data);
+    }
+
+    public function blogDetail($blog_id) {
+        $blog = Blog::find($blog_id);
+        $blog_categories = BlogCategory::orderBy('id', 'DESC')->get();
+        $data['blog'] = $blog;
+        $data['blog_categories'] = $blog_categories;
+        $data['categorySelected'] = $blog->blog_category_id;
+        return view('client.blog-detail',$data);
+    }
+    public function autocompleteSearch(Request $request) {
         $query = $request->get('query');
         $filterResult = Product::where('title', 'LIKE', '%'. $query. '%')->get();
         return response()->json($filterResult);

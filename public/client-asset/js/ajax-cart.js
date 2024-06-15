@@ -1,29 +1,29 @@
 typeof ShopifyAPI == "undefined" && (ShopifyAPI = {});
-function attributeToString(attribute) {
-  return (
-    typeof attribute != "string" &&
-      ((attribute += ""), attribute === "undefined" && (attribute = "")),
-    jQuery.trim(attribute)
-  );
-}
-(ShopifyAPI.onCartUpdate = function (cart) {}),
-  (ShopifyAPI.updateCartNote = function (note, callback) {
-    var params = {
-      type: "POST",
-      url: "/cart/update.js",
-      data: "note=" + attributeToString(note),
-      dataType: "json",
-      success: function (cart) {
-        typeof callback == "function"
-          ? callback(cart)
-          : ShopifyAPI.onCartUpdate(cart);
-      },
-      error: function (XMLHttpRequest2, textStatus2) {
-        ShopifyAPI.onError(XMLHttpRequest2, textStatus2);
-      },
-    };
-    jQuery.ajax(params);
-  });
+// function attributeToString(attribute) {
+//   return (
+//     typeof attribute != "string" &&
+//       ((attribute += ""), attribute === "undefined" && (attribute = "")),
+//     jQuery.trim(attribute)
+//   );
+// }
+// (ShopifyAPI.onCartUpdate = function (cart) {}),
+//   (ShopifyAPI.updateCartNote = function (note, callback) {
+//     var params = {
+//       type: "POST",
+//       url: "/cart/update.js",
+//       data: "note=" + attributeToString(note),
+//       dataType: "json",
+//       success: function (cart) {
+//         typeof callback == "function"
+//           ? callback(cart)
+//           : ShopifyAPI.onCartUpdate(cart);
+//       },
+//       error: function (XMLHttpRequest2, textStatus2) {
+//         ShopifyAPI.onError(XMLHttpRequest2, textStatus2);
+//       },
+//     };
+//     jQuery.ajax(params);
+//   });
 var ajaxCart = (function (module, $) {
   "use strict";
   var init,

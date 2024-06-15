@@ -39,7 +39,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('shippers.index') }}" class="nav-link {{ request()->routeIs("shippers.*") ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-tag"></i>
+                        <i class="nav-icon fas fa-shipping-fast"></i>
                         <p>Shipper</p>
                     </a>
                 </li>
@@ -73,6 +73,18 @@
                     <a href="{{ route("users.index") }}" class="nav-link {{ request()->routeIs("users.*") ? 'active' : '' }}">
                         <i class="nav-icon  fas fa-users"></i>
                         <p>Users</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route("blog-category.index") }}" class="nav-link {{ request()->routeIs("blog-category.*") ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-folder"></i>
+                        <p>BLog Category</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route("blogs.index") }}" class="nav-link {{ request()->routeIs("blogs.*") ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-blog"></i>
+                        <p>BLog</p>
                     </a>
                 </li>
                 <li class="nav-item">

@@ -29,6 +29,9 @@ class ShopController extends Controller
 
         // filter by category
         if (!empty($categorySlug)) {
+            if ($categorySlug == 'all') {
+                $products = Product::where('status', '1');
+            }
             $category = Category::where('slug', $categorySlug)->first();
             if ($category) {
                 $products->where('category_id', $category->id);

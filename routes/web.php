@@ -8,6 +8,8 @@ use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\PageController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\BlogCategoryController;
+use App\Http\Controllers\admin\BlogController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\client\AuthController;
@@ -38,6 +40,8 @@ use App\Http\Controllers\shipper\ShipperOrderController;
 Route::get('/', [ClientController::class, 'index'])->name('client.home');
 Route::get('/collection', [ClientController::class, 'collection'])->name('client.collection');
 Route::get('/shop/{categorySlug?}/{brand?}', [ShopController::class, 'index'])->name('client.shop');
+Route::get('/blog/{categorySlug?}', [ClientController::class, 'blog'])->name('client.blog');
+Route::get('/blog-detail/{blog_id}', [ClientController::class, 'blogDetail'])->name('client.blogDetail');
 Route::get('/product/{id}', [ShopController::class, 'product'])->name('client.product');
 Route::get('/cart', [CartController::class, 'cart'])->name('client.cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('client.addToCart');
@@ -182,6 +186,22 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/pages/{page}/edit', [PageController::class, 'edit'])->name('pages.edit');
         Route::put('/pages/{page}', [PageController::class, 'update'])->name('pages.update');
         Route::delete('/pages/{page}', [PageController::class, 'destroy'])->name('pages.delete');
+
+        // BlogCategory Route
+        Route::get('/blog-category', [BlogCategoryController::class, 'index'])->name('blog-category.index');
+        Route::get('/blog-category/create', [BlogCategoryController::class, 'create'])->name('blog-category.create');
+        Route::post('/blog-category', [BlogCategoryController::class, 'store'])->name('blog-category.store');
+        Route::get('/blog-category/{id}/edit', [BlogCategoryController::class, 'edit'])->name('blog-category.edit');
+        Route::put('/blog-category/{id}', [BlogCategoryController::class, 'update'])->name('blog-category.update');
+        Route::delete('/blog-category/{id}', [BlogCategoryController::class, 'destroy'])->name('blog-category.delete');
+
+        // Blog Route
+        Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+        Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
+        Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
+        Route::get('/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
+        Route::put('/blogs/{blog}', [BlogController::class, 'update'])->name('blogs.update');
+        Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.delete');
 
         //product update image
         Route::post('/product-images/update', [ProductImageController::class, 'update'])->name('product-images.update');

@@ -183,4 +183,4 @@
     );
   };
 })(jQuery);
-//# sourceMappingURL=/cdn/shop/t/3/assets/jquery.meanmenu.js.map?v=103147856434142879641712667563
+

@@ -39,23 +39,81 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1'
         ]);
         $product = Product::with('productImages', 'brand')->find($request->id);
+        $size = $request->size;
+        $color = $request->color;
         if ($product == null) {
             return response()->json([
                 'status' => false,
                 'message' => 'Product not found',
             ]);
         }
-        if (Cart::count() > 0 ) {
-            // echo "Product is already added";
+        // if (Cart::count() > 0 ) {
+        //     $cartContent = Cart::content();
+        //     $productAlreadyExists = false;
+        //     foreach ($cartContent as $item) {
+        //         if ($item->id == $product->id) {
+        //             $productAlreadyExists = true;
+        //         };
+        //     }
+        //     if ($productAlreadyExists == false) {
+        //         Cart::add([
+        //             'id' => $product->id,
+        //             'name' => $product->title,
+        //             'qty' => $request->quantity,
+        //             'price' => $product->price,
+        //             'options' => [
+        //                 'size' => $request->size,
+        //                 'color' => $request->color,
+        //                 'productImages' => (!empty($product->productImages)) ? $product->productImages->first() : '',
+        //                 'product_brand' => $product->brand->name,
+        //             ]
+        //         ]);
+        //         $status = true;
+        //         $message =  $product->title.' added successfully';
+        //     }else {
+        //         $status = false;
+        //         $message =  $product->title.' already added in cart';
+        //     }
+
+        // }else {
+        //     // echo "Cart is empty now add new product";
+        //     // Cart is empty
+        //     // Cart::add($product->id, $product->title,1, $product->price, ['productImages' => (!empty($product->productImages)) ? $product->productImages->first() : ''], ['product_brand'=>$product->brand->name] );
+        //     Cart::add([
+        //         'id' => $product->id,
+        //         'name' => $product->title,
+        //         'qty' => $request->quantity,
+        //         'price' => $product->price,
+        //         'options' => [
+        //             'size' => $request->size,
+        //             'color' => $request->color,
+        //             'productImages' => (!empty($product->productImages)) ? $product->productImages->first() : '',
+        //             'product_brand' => $product->brand->name,
+        //         ]
+        //     ]);
+
+        //     $status = true;
+        //     $message =  $product->title.' added successfully';
+        // }
+        if (Cart::count() > 0) {
             $cartContent = Cart::content();
             $productAlreadyExists = false;
+
             foreach ($cartContent as $item) {
-                if ($item->id == $product->id) {
+                if ($item->id == $product->id &&
+                    $item->options['size'] == $size &&
+                    $item->options['color'] == $color) {
                     $productAlreadyExists = true;
-                };
+                    // Tăng số lượng của sản phẩm đã tồn tại trong giỏ hàng
+                    Cart::update($item->rowId, $item->qty + $request->quantity);
+                    $message = $product->title . ' quantity updated in cart';
+                    $status = true;
+                    break; // Thoát khỏi vòng lặp sau khi đã cập nhật số lượng
+                }
             }
-            if ($productAlreadyExists == false) {
-                // Cart::add($product->id, $product->title,1, $product->price, ['productImages' => (!empty($product->productImages)) ? $product->productImages->first() : ''], ['product_brand'=>$product->brand->name] );
+
+            if (!$productAlreadyExists) {
+                // Thêm sản phẩm mới vào giỏ hàng nếu chưa tồn tại
                 Cart::add([
                     'id' => $product->id,
                     'name' => $product->title,
@@ -69,16 +127,10 @@ class CartController extends Controller
                     ]
                 ]);
                 $status = true;
-                $message =  $product->title.' added successfully';
-            }else {
-                $status = false;
-                $message =  $product->title.' already added in cart';
+                $message =  $product->title . ' added successfully';
             }
-
-        }else {
-            // echo "Cart is empty now add new product";
-            // Cart is empty
-            // Cart::add($product->id, $product->title,1, $product->price, ['productImages' => (!empty($product->productImages)) ? $product->productImages->first() : ''], ['product_brand'=>$product->brand->name] );
+        } else {
+            // Nếu giỏ hàng trống, thêm sản phẩm vào giỏ hàng
             Cart::add([
                 'id' => $product->id,
                 'name' => $product->title,
@@ -91,9 +143,8 @@ class CartController extends Controller
                     'product_brand' => $product->brand->name,
                 ]
             ]);
-
             $status = true;
-            $message =  $product->title.' added successfully';
+            $message =  $product->title . ' added successfully';
         }
 
         return response()->json([

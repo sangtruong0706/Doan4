@@ -24,9 +24,9 @@
             <div class="sidebar_section shop_filter">
                <span class="filter_close hide small--show medium--show"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
                <div class="sidebar-links">
-                  <h1>Categories</h1>
+                <h1>Categories</h1>
                   <ul class="category-filter">
-                     <li class=""><a href=""  > All</a></li>
+                     <li class=""><a href="{{ route("client.shop","all") }}"  > All</a></li>
                      @if ($categories->isNotEmpty())
                         @foreach ($categories as $category)
                             <li>

@@ -17,50 +17,22 @@
         this.headerHeight(),
         this.grid_height(),
         this.sorting(),
-        this.scrolltop(),
-        this.initwishlist(),
-        this.newsletterpopup(),
         this.search();
     },
     mob_img: function () {
       var theme_name = $2("body").data("shop");
       $2(".mob_logo").html("<h2>" + theme_name + "</h2>");
     },
-    search: function () {
-      var product_detail = $2(".search_section .product_item").html();
-      product_detail || $2(".search_section #collection").hide();
-      var blog_detail = $2(".search_section .blog_item").html();
-      blog_detail || $2(".search_section #blog").hide();
-      var page_detail = $2(".search_section #page .content").html();
-      page_detail || $2(".search_section #page").hide();
-    },
+    // search: function () {
+    //   var product_detail = $2(".search_section .product_item").html();
+    //   product_detail || $2(".search_section #collection").hide();
+    //   var blog_detail = $2(".search_section .blog_item").html();
+    //   blog_detail || $2(".search_section #blog").hide();
+    //   var page_detail = $2(".search_section #page .content").html();
+    //   page_detail || $2(".search_section #page").hide();
+    // },
     grid_height: function () {
       $2(".grid__item .product_image").responsiveEqualHeightGrid();
-    },
-    newsletterpopup: function () {
-      $2(window).load(function () {
-        setTimeout(function () {
-          var check_cookie = $2.cookie("mailing_list_popup");
-          if (
-            ($2(".newsletter_popup .close_pop").click(function (e) {
-              $2.cookie("mailing_list_popup", "1", { expires: 31 }),
-                $2(".newsletter_popup").removeClass("active_popup"),
-                $2("body").removeClass("overflow_hidden");
-            }),
-            check_cookie == null)
-          )
-            $2.cookie("mailing_list_popup", "1", { expires: 31 }),
-              $2(".newsletter_popup").addClass("active_popup"),
-              $2("body").addClass("overflow_hidden");
-          else if (check_cookie < 1) {
-            (x = $2.cookie("mailing_list_popup")), (y = 1);
-            var z = +x + +y;
-            $2.cookie("mailing_list_popup", z, { expires: 31 }),
-              $2(".newsletter_popup").addClass("active_popup"),
-              $2("body").addClass("overflow_hidden");
-          }
-        }, 3e3);
-      });
     },
     slider: function () {
       $2("#slider_show").bxSlider({
@@ -230,40 +202,6 @@
           $2("#wishlist-header").hide(),
           $2(".empty_wishlist").show())
         : $2(".empty_wishlist").hide();
-    },
-    scrolltop: function () {
-      $2(window).scroll(function () {
-        $2(this).scrollTop() > 100
-          ? $2("#scrollToTop").fadeIn()
-          : $2("#scrollToTop").fadeOut();
-      }),
-        $2("#scrollToTop").click(function () {
-          return $2("html, body").animate({ scrollTop: 0 }, 800), !1;
-        });
-    },
-    initwishlist: function () {
-      $2(".product_specify .product_wishlist_btn form button").click(function (
-        e
-      ) {
-        e.preventDefault();
-        var form = $2(this).parent();
-        $2.ajax({
-          type: "POST",
-          url: "/contact",
-          data: form.serialize(),
-          success: function (data) {
-            $2("#messageBox")
-              .text("product added into Wishlist")
-              .fadeIn()
-              .delay(4e3)
-              .fadeOut("slow"),
-              form.html(
-                ' <button><a href="/pages/wishlist" > Added into Wishlist </a></button> '
-              );
-          },
-          error: function (xhr, text) {},
-        });
-      });
     },
   };
 })(jQuery),

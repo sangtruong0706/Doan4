@@ -141,34 +141,28 @@
        <div class="grid">
           <h1>Style inspiration, straight from social</h1>
           <div class="blog_list">
-             <div class="grid__item one-half small--one-whole medium--one-whole">
-                <div class="blog_item">
-                   <div class="blog_img">
-                      <a href="/blogs/news/mercado-credito-shopify-integration-in-mexico-enhancing-e-commerce-payments">
-                      <img src="" alt="Mercado Crédito Shopify Integration in Mexico: Enhancing E-commerce Payments" />
-                      </a>
-                   </div>
-                   <h2> <a href="">Mercado Crédito Shopify Integration in Mexico: Enhancing E-commerce Payments</a></h2>
-                   <h5>09 Apr 2024</h5>
-                   <p> Mercado Crédito Shopify Integration in Mexico: Enhancing E-commerce Payments Introduction: Picture this: You've found the perfect item after hours of...</p>
-                   <a href="" class="blog_read_more">Read more
-                   <span><i class="fa fa-angle-right"></i></span></a>
-                </div>
-             </div>
-             <div class="grid__item one-half small--one-whole medium--one-whole">
-                <div class="blog_item">
-                   <div class="blog_img">
-                      <a href="">
-                      <img src="" alt="We've got your wirst watch covered" />
-                      </a>
-                   </div>
-                   <h2> <a href="">We've got your wirst watch covered</a></h2>
-                   <h5>07 Nov 2016</h5>
-                   <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut...</p>
-                   <a href="" class="blog_read_more">Read more
-                   <span><i class="fa fa-angle-right"></i></span></a>
-                </div>
-             </div>
+            @if($blogs->isnotempty())
+                @foreach ($blogs as $blog)
+                    <div class="grid__item one-half small--one-whole medium--one-whole">
+                        <div class="blog_item">
+                        <div class="blog_img">
+                            <a href="">
+                                @if (!empty($blog->image))
+                                    <img src="{{ asset('uploads/blog/thumb/'.$blog->image) }}"  >
+                                @else
+                                    <img src="{{ asset('admin-asset/img/default-150x150.png') }}">
+                                @endif
+                            </a>
+                        </div>
+                        <h2> <a href="">{{ $blog->title }}</a></h2>
+                        <h5>{{ \Carbon\Carbon::parse($blog->created_at)->format('d-m-Y') }}</h5>
+                        <div class="content-blog-home"> {!! $blog->content !!}</div>
+                        <a href="" class="blog_read_more my-2">Read more
+                        <span><i class="fa fa-angle-right"></i></span></a>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
           </div>
           <div class="more_blog_btn">
              <a href="/blogs/news" class="btn">VIEW ALL <span><i class="fa fa-angle-right"></i></span></a>
